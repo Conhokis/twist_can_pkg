@@ -9,7 +9,7 @@ private:
 	//Encoder resolution
 	int32_t _encoder_resolution;
 	//Position values
-	double _x, _y, _theta, _v_x, _v_y, _v_theta;
+	double _x, _y, _theta, _v_x, _v_y, _v_theta, _start_theta;
 	//Encoder impulse counters
 	int32_t _impulses_1, _impulses_2;
 	//Times of read;
@@ -20,7 +20,7 @@ private:
 	nav_msgs::Odometry _odom;
 
 public:
-	OdometryCalculator(int32_t encoder_resolution);
+	OdometryCalculator(int32_t encoder_resolution, int32_t impulses_1, int32_t impulses_2);
 
 	//Reads encoders and updates speed, positions and the desired messages
 	void updateOdometry(int32_t new_impulses_1, int32_t new_impulses_2, ros::Time current_time);

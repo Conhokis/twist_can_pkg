@@ -33,8 +33,8 @@ canMotorInterface canMI_2(canBH, node_id[1]);
 sig_atomic_t volatile g_request_shutdown = 0;
 
 //Distance between wheels
-#define DIST_BETWEEN_WHEELS 0.5
-#define SPEED_FACTOR 0.25
+#define DIST_BETWEEN_WHEELS 0.446
+#define SPEED_FACTOR 0.5
 
 //Catches ctrl-c events, this is tested and working
 void mySigIntHandler(int sig)
@@ -55,8 +55,8 @@ ros::Time start_time;
 //FOR NOW DUE TO TELEOP KEYBOARD KEYS, torna o input num degrau
 #define MIN_HITS_KEY 4
 unsigned int count = 0;
-int16_t lin_vel = 0;
-int16_t rot_vel = 0;
+double lin_vel = 0;
+double rot_vel = 0;
 
 void twistCallback(const geometry_msgs::Twist::ConstPtr& msg) {
     start_time = ros::Time::now();
@@ -95,7 +95,10 @@ int main(int argc, char **argv) {
     canMI_1.checkMotorStatus();
     canMI_2.checkMotorStatus();
     //Gets the motor resolution and creates the class that handles odometry calculations
-    OdometryCalculator OdomCalc(canMI_1.getEncoderResolution());
+	int32_t aux1 = canMI_1.readMotorEncoder();
+	int32_t aux2 = canMI_2.readMotorEncoder();
+    OdometryCalculator OdomCalc(canMI_1.getEncoderResolution(), -aux1, aux2);
+    std::cout << "encoder 1: " << aux1 << " encoder 2: " << aux2; 
     //Sets speed to zero then powers on motor
     canMI_1.powerOnMotor();
     canMI_2.powerOnMotor();
@@ -112,10 +115,11 @@ int main(int argc, char **argv) {
         //If no messages received, enters this if
         if((ros::Time::now() - start_time) > TWIST_TIMEOUT) {
             lin_vel = 0;
+	    rot_vel = 0;
             count = 0;
         }
-
-        canMI_1.setTargetVelocity((lin_vel + (DIST_BETWEEN_WHEELS/2) * rot_vel) * 3500 * SPEED_FACTOR);
+	
+        canMI_1.setTargetVelocity((lin_vel + (DIST_BETWEEN_WHEELS/2) * rot_vel) * -1 * 3500 * SPEED_FACTOR);
         canMI_2.setTargetVelocity((lin_vel - (DIST_BETWEEN_WHEELS/2) * rot_vel) * 3500 * SPEED_FACTOR);
 
         //====================
@@ -124,14 +128,13 @@ int main(int argc, char **argv) {
         current_time = ros::Time::now();
         encoder_impulses_1 = canMI_1.readMotorEncoder();
         encoder_impulses_2 = canMI_2.readMotorEncoder();
-        OdomCalc.updateOdometry(encoder_impulses_1, encoder_impulses_2, current_time);
+        OdomCalc.updateOdometry(-encoder_impulses_1, encoder_impulses_2, current_time);
         odom_broadcaster.sendTransform(OdomCalc.getTfMessage());
         odom_pub.publish(OdomCalc.getOdomMessage());
 
         //====================
         end_loop_time = ros::Time::now();
         //Uncomment for loop times
-        std::cout << "Loop Time: " << end_loop_time - start_loop_time << std::endl;
         loop_rate.sleep();
     }
 
