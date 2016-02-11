@@ -33,7 +33,7 @@ canMotorInterface canMI_2(canBH, node_id[1]);
 sig_atomic_t volatile g_request_shutdown = 0;
 
 //Distance between wheels
-#define DIST_BETWEEN_WHEELS 0.446
+#define DIST_BETWEEN_WHEELS 0.465
 #define SPEED_FACTOR 0.5
 
 //Catches ctrl-c events, this is tested and working
@@ -74,7 +74,7 @@ int main(int argc, char **argv) {
     //Configurations of the node
     ros::init(argc, argv, "motor_node", ros::init_options::NoSigintHandler);
     ros::NodeHandle n("~");
-    ros::Rate loop_rate(50);
+    ros::Rate loop_rate(20);
 
     //Configuration for catching shutdown event
     signal(SIGINT, mySigIntHandler);
@@ -82,13 +82,13 @@ int main(int argc, char **argv) {
     ros::XMLRPCManager::instance()->bind("shutdown", shutdownCallback);
 
     //Subscribe to /cmd_vel
-    ros::Subscriber sub = n.subscribe("/cmd_vel", 10, twistCallback);
+    ros::Subscriber sub = n.subscribe("/cmd_vel", 1, twistCallback);
     //To check if theres is input or not from twist_cmd_vel
     ros::Duration TWIST_TIMEOUT = ros::Duration(0.05);
     start_time = ros::Time::now() - TWIST_TIMEOUT;
 
     //Create TF broadcaster and odom publisher;
-    ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 50);
+    ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("odom", 1);
     tf::TransformBroadcaster odom_broadcaster;
 
     //Sends a message to the motor and waits for the receive, check if motor is connected

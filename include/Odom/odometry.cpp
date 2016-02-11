@@ -4,9 +4,10 @@
 
 
 #define M_PI 3.14159265358979323846  /* pi */
-#define WHEEL_RADIUS 0.13
-#define DIST_BETWEEN_WHEELS 0.446
-
+#define WHEEL_RADIUS 0.125
+#define DIST_BETWEEN_WHEELS 0.465
+#define RIGHT_WHEEL_CORRECTION 0.997
+#define LEFT_WHEEL_CORRECTION 1.003
 nav_msgs::Odometry OdometryCalculator::getOdomMessage() {
 	return _odom;
 }
@@ -33,8 +34,8 @@ OdometryCalculator::OdometryCalculator(int32_t encoder_resolution, int32_t impul
 
 void OdometryCalculator::updateOdometry(int32_t new_impulses_1, int32_t new_impulses_2, ros::Time current_time) {
 	//Convert impulses to distance travelled by wheel
-	double d_1 = (((new_impulses_1 - _impulses_1) / 4096.0f) / 16) * 2 * M_PI * WHEEL_RADIUS;
-	double d_2 = (((new_impulses_2 - _impulses_2) / 4096.0f) / 16) * 2 * M_PI * WHEEL_RADIUS;
+	double d_1 = LEFT_WHEEL_CORRECTION * (((new_impulses_1 - _impulses_1) / 4096.0f) / 16) * 2 * M_PI * WHEEL_RADIUS;
+	double d_2 = RIGHT_WHEEL_CORRECTION * (((new_impulses_2 - _impulses_2) / 4096.0f) / 16) * 2 * M_PI * WHEEL_RADIUS;
 
 	double total_d = (d_1 + d_2) / 2;
 	double theta_diff = ((d_1 - d_2) / DIST_BETWEEN_WHEELS);
