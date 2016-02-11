@@ -24,6 +24,7 @@ sig_atomic_t volatile g_request_shutdown = 0;
 void mySigIntHandler(int sig)
 {
     g_request_shutdown = 1;
+    std::cout << "teste2" << std::endl;
 }
 
 void updateTwistSpeed(const geometry_msgs::Twist::ConstPtr& msg) {
@@ -36,7 +37,7 @@ void updateTwistSpeed(const geometry_msgs::Twist::ConstPtr& msg) {
 
 void shutdownCallback(XmlRpc::XmlRpcValue& params, XmlRpc::XmlRpcValue& result)
 {
-    std::cout << "teste\n" << std::endl;
+    std::cout << "teste1" << std::endl;
 }
 
 int main(int argc, char **argv) {
@@ -74,7 +75,7 @@ int main(int argc, char **argv) {
         ros::spinOnce();
 
         if((ros::Time::now() - start_time) > TWIST_TIMEOUT) {
-            std::cout << "No messages received" << std::endl;
+            //std::cout << "No messages received" << std::endl;
             count = 0;
         }
 
