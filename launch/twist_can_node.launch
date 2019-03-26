@@ -1,0 +1,4 @@
+<launch>
+	<node pkg="twist_can_pkg" type="twist_can_pkg_node" name ="twist_can_pkg_node" output="screen" />
+
+</launch>
