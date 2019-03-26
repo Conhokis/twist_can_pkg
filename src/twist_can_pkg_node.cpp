@@ -112,6 +112,11 @@ int main(int argc, char **argv) {
         return 1;
     }
 
+    if ((nbytes = write(s, &frame, sizeof(frame))) != sizeof(frame)) {
+        perror("write");
+        return 1;
+    }   
+
     while (ros::ok()) {
         //Check if master is running
         ros::spinOnce();
@@ -120,10 +125,7 @@ int main(int argc, char **argv) {
         if((ros::Time::now() - start_time) > TWIST_TIMEOUT) {
             std::cout << "No messages received" << std::endl;
 
-            if ((nbytes = write(s, &frame, sizeof(frame))) != sizeof(frame)) {
-                perror("write");
-                return 1;
-            }   
+            
 
             count = 0;
         }
