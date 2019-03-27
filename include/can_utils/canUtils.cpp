@@ -10,7 +10,11 @@ canMotorInterface::canMotorInterface(const char* canInterface, const char* node_
 	_node_id1 = node_id1;
 	_node_id2 = node_id2;
 
-	//canBH = new canBusHandler(canInterface);
+	canBH = new canBusHandler(canInterface);
+}
+
+void canMotorInterface::canRead() {
+	canBH->readCanFrame();
 }
 
 #endif

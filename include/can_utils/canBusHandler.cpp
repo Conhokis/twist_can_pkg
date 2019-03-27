@@ -23,6 +23,11 @@
 #include <linux/can.h>
 #include <linux/can/raw.h>
 
+extern "C" {
+	#include "lib.h"
+}
+
+
 extern int optind, opterr, optopt;
 
 static volatile int running = 1;
@@ -41,6 +46,7 @@ canBusHandler::canBusHandler(const char* can_interface) {
 	struct sockaddr_can addr;
 	int i;
 	struct ifreq ifr;
+	int s[1];
 
 	//Number of maximum concurrent can connections
 	currmax = 1;
@@ -101,8 +107,70 @@ canBusHandler::canBusHandler(const char* can_interface) {
 			perror("bind");
 		}
 
-		std::cout << "success bitch!\n" << std::endl;
+		read_s = s[i];
 	}
+
+	int s_w; /* can raw socket */ 
+	int nbytes;
+	struct sockaddr_can addr_w;
+	struct ifreq ifr_w;
+
+	/* open socket */
+	if ((s_w = socket(PF_CAN, SOCK_RAW, CAN_RAW)) < 0) {
+		perror("socket");
+	}
+
+	addr_w.can_family = AF_CAN;
+
+	strcpy(ifr_w.ifr_name, _can_interface);
+	if (ioctl(s_w, SIOCGIFINDEX, &ifr_w) < 0) {
+		perror("SIOCGIFINDEX");
+	}
+	addr_w.can_ifindex = ifr_w.ifr_ifindex;
+
+	/* disable default receive filter on this RAW socket */
+	/* This is obsolete as we do not read from the socket at all, but for */
+	/* this reason we can remove the receive list in the Kernel to save a */
+	/* little (really a very little!) CPU usage.                          */
+	setsockopt(s_w, SOL_CAN_RAW, CAN_RAW_FILTER, NULL, 0);
+
+	if (bind(s_w, (struct sockaddr *)&addr_w, sizeof(addr_w)) < 0) {
+		perror("bind");	}
+
+	write_s = s_w;
+	*addr_write = addr_w;
+}
+
+void canBusHandler::readCanFrame() {
+	struct msghdr msg;
+	struct can_frame frame;
+	int nbytes;
+	fd_set rdfs;
+	char ctrlmsg[CMSG_SPACE(sizeof(struct timeval)) + CMSG_SPACE(sizeof(__u32))];
+
+	FD_ZERO(&rdfs);
+	FD_SET(write_s, &rdfs);
+
+	if (FD_ISSET(write_s, &rdfs)) {
+
+		/* these settings may be modified by recvmsg() */
+		msg.msg_namelen = sizeof(addr_write);
+		msg.msg_controllen = sizeof(ctrlmsg);  
+		msg.msg_flags = 0;
+
+		nbytes = recvmsg(write_s, &msg, 0);
+		if (nbytes < 0) {
+			perror("read");
+		}
+
+		if (nbytes < sizeof(struct can_frame)) {
+			fprintf(stderr, "read: incomplete CAN frame\n");
+
+		fprint_long_canframe(stdout, &frame, NULL, 0);
+		//Aqui tem que fazer uma cópia do frame e retornar, se for preciso depois faço umas funções para dar parse à frame baseado no lib.c
+		printf("\n");
+		}
+	}	
 }
 
 #endif

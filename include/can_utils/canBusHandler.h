@@ -5,13 +5,14 @@
 class canBusHandler {
 private:
 	const char* _can_interface;
-	int s[MAXSOCK];
-	
+	int read_s;
+	int write_s;
+	struct sockaddr_can *addr_write;
 
 public:
 	//Criação das sockets para comunicar é feita no construtor do handler
 	canBusHandler(const char* can_interface);
 
-	//char readCanFrame();
+	void readCanFrame();
 	//void writeCanFrame();
 };

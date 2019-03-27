@@ -124,7 +124,8 @@ include_directories(
 # )
 
 add_library(can_library include/can_utils/canUtils.cpp include/can_utils/canBusHandler.cpp)
-add_library(can_lib include/lib/lib.c)
+add_library(can_lib include/can_utils/lib.c)
+target_link_libraries(can_library can_lib)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -152,7 +153,6 @@ target_link_libraries(${PROJECT_NAME}_node
 )
 
 target_link_libraries(twist_can_pkg_node can_library)
-target_link_libraries(twist_can_pkg_node can_lib)
 
 #############
 ## Install ##

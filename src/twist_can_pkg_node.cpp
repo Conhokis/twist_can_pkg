@@ -31,6 +31,9 @@ int main(int argc, char **argv) {
     //Start node interface with connection name and controller node-id
     canMotorInterface canMI(interface_id, node_id1, node_id2);
 
+    //Fazer um read e testar com o cansend
+    
+
 //=============================================
 //Pegar nisto só depois de ter o can feito lol
 /*

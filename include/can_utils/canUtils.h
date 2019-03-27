@@ -13,5 +13,6 @@ private:
 public:
 	canMotorInterface(const char* canInterface, const char* node_id1, const char* node_id2); 
 
+	void canRead();
 };
 
