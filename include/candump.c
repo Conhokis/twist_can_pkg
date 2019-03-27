@@ -71,9 +71,6 @@
 
 static char *cmdlinename[MAXSOCK];
 
-#define MAXANI 4
-const char anichar[MAXANI] = {'|', '/', '-', '\\'};
-
 extern int optind, opterr, optopt;
 
 static volatile int running = 1;
@@ -105,10 +102,6 @@ int main(int argc, char **argv)
 	signal(SIGHUP, sigterm);
 	signal(SIGINT, sigterm);
 
-	while ((opt = getopt(argc, argv, "t:ciaSs:b:B:u:ldLn:r:he?")) != -1) {
-
-	}
-
 	currmax = 1;
 
 	if (currmax > MAXSOCK) {
@@ -118,8 +111,7 @@ int main(int argc, char **argv)
 
 	for (i=0; i < currmax; i++) {
 
-		ptr = argv[1];
-		printf("%s \n", ptr);
+		ptr = "can0";
 
 		s[i] = socket(PF_CAN, SOCK_RAW, CAN_RAW);
 		if (s[i] < 0) {
@@ -227,6 +219,7 @@ int main(int argc, char **argv)
 					running = 0;
 
 				fprint_long_canframe(stdout, &frame, NULL, view);
+				//Aqui tem que fazer uma cópia do frame e retornar, se for preciso depois faço umas funções para dar parse à frame baseado no lib.c
 				printf("\n");
 			}
 		}
