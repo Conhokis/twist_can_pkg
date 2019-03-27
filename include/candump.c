@@ -177,6 +177,7 @@ int main(int argc, char **argv)
 //MESSAGE RECEIVE STARTS HERE
 
 	/* these settings are static and can be held out of the hot path */
+/*
 	iov.iov_base = &frame;
 	msg.msg_name = &addr;
 	msg.msg_iov = &iov;
@@ -195,11 +196,11 @@ int main(int argc, char **argv)
 		}
 
 		for (i=0; i<currmax; i++) {  /* check all CAN RAW sockets */
-
+/*
 			if (FD_ISSET(s[i], &rdfs)) {
 
 				/* these settings may be modified by recvmsg() */
-				iov.iov_len = sizeof(frame);
+/*				iov.iov_len = sizeof(frame);
 				msg.msg_namelen = sizeof(addr);
 				msg.msg_controllen = sizeof(ctrlmsg);  
 				msg.msg_flags = 0;
@@ -225,7 +226,7 @@ int main(int argc, char **argv)
 		}
 
 	}
-
+*/
 	for (i=0; i<currmax; i++)
 		close(s[i]);
 

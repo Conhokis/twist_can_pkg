@@ -123,6 +123,9 @@ include_directories(
 #   src/${PROJECT_NAME}/twist_can_pkg.cpp
 # )
 
+add_library(can_library include/can_utils/canUtils.cpp include/can_utils/canBusHandler.cpp)
+add_library(can_lib include/lib/lib.c)
+
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -147,6 +150,9 @@ add_executable(${PROJECT_NAME}_node src/twist_can_pkg_node.cpp)
 target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
 )
+
+target_link_libraries(twist_can_pkg_node can_library)
+target_link_libraries(twist_can_pkg_node can_lib)
 
 #############
 ## Install ##
