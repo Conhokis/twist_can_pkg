@@ -108,7 +108,10 @@ canBusHandler::canBusHandler(const char* can_interface) {
 		}
 
 		read_s = s[i];
+		addr_read = &addr;
 	}
+
+	
 
 	int s_w; /* can raw socket */ 
 	int nbytes;
@@ -122,6 +125,8 @@ canBusHandler::canBusHandler(const char* can_interface) {
 
 	addr_w.can_family = AF_CAN;
 
+	
+
 	strcpy(ifr_w.ifr_name, _can_interface);
 	if (ioctl(s_w, SIOCGIFINDEX, &ifr_w) < 0) {
 		perror("SIOCGIFINDEX");
@@ -134,42 +139,60 @@ canBusHandler::canBusHandler(const char* can_interface) {
 	/* little (really a very little!) CPU usage.                          */
 	setsockopt(s_w, SOL_CAN_RAW, CAN_RAW_FILTER, NULL, 0);
 
+	
+
 	if (bind(s_w, (struct sockaddr *)&addr_w, sizeof(addr_w)) < 0) {
 		perror("bind");	}
 
+			
+
 	write_s = s_w;
-	*addr_write = addr_w;
+	addr_write = &addr_w;
 }
 
 void canBusHandler::readCanFrame() {
+	
+
 	struct msghdr msg;
 	struct can_frame frame;
 	int nbytes;
 	fd_set rdfs;
 	char ctrlmsg[CMSG_SPACE(sizeof(struct timeval)) + CMSG_SPACE(sizeof(__u32))];
+	struct iovec iov;
+	unsigned char view = 0;
+	
+	iov.iov_base = &frame;
+	msg.msg_name = &addr_read;
+	msg.msg_iov = &iov;
+	msg.msg_iovlen = 1;
+	msg.msg_control = &ctrlmsg;
 
 	FD_ZERO(&rdfs);
-	FD_SET(write_s, &rdfs);
+	FD_SET(read_s, &rdfs);
 
-	if (FD_ISSET(write_s, &rdfs)) {
+	if (FD_ISSET(read_s, &rdfs)) {
 
 		/* these settings may be modified by recvmsg() */
-		msg.msg_namelen = sizeof(addr_write);
+		iov.iov_len = sizeof(frame);
+		msg.msg_namelen = sizeof(addr_read);
 		msg.msg_controllen = sizeof(ctrlmsg);  
 		msg.msg_flags = 0;
 
-		nbytes = recvmsg(write_s, &msg, 0);
+		nbytes = recvmsg(read_s, &msg, 0);
+		std::cout << nbytes << std::endl;
+
 		if (nbytes < 0) {
 			perror("read");
 		}
-
+		
 		if (nbytes < sizeof(struct can_frame)) {
+		
 			fprintf(stderr, "read: incomplete CAN frame\n");
-
+		}
+		
 		fprint_long_canframe(stdout, &frame, NULL, 0);
 		//Aqui tem que fazer uma cópia do frame e retornar, se for preciso depois faço umas funções para dar parse à frame baseado no lib.c
 		printf("\n");
-		}
 	}	
 }
 

@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
     canMotorInterface canMI(interface_id, node_id1, node_id2);
 
     //Fazer um read e testar com o cansend
-    
+    canMI.canRead();
 
 //=============================================
 //Pegar nisto só depois de ter o can feito lol
