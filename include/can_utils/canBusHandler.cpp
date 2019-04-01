@@ -148,6 +148,8 @@ canBusHandler::canBusHandler(const char* can_interface) {
 
 	write_s = s_w;
 	addr_write = &addr_w;
+
+	delete[] s;
 }
 
 void canBusHandler::readCanFrame() {
@@ -193,7 +195,19 @@ void canBusHandler::readCanFrame() {
 		fprint_long_canframe(stdout, &frame, NULL, 0);
 		//Aqui tem que fazer uma cópia do frame e retornar, se for preciso depois faço umas funções para dar parse à frame baseado no lib.c
 		printf("\n");
-	}	
+	}
+
+	delete[] ctrlmsg;	
+}
+
+void canBusHandler::writeCanFrame(unsigned char* str_frame) {
+	struct can_frame frame;
+
+	parse_canframe(str_frame, &frame);
+
+	if((nbytes = write(write_s, &frame, sizeof(frame))) != sizeof(frame)) {
+		perror("write");
+	}
 }
 
 #endif

@@ -15,5 +15,5 @@ public:
 	canBusHandler(const char* can_interface);
 
 	void readCanFrame();
-	//void writeCanFrame();
+	void writeCanFrame(unsigned char* str_frame);
 };

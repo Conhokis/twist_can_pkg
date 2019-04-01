@@ -17,4 +17,10 @@ void canMotorInterface::canRead() {
 	canBH->readCanFrame();
 }
 
+void canMotorInterface::canTestWrite() {
+	unisgned char buff[] = "7DF#0201050000000000";
+
+	canBH->writeCanFrame(buff);
+}
+
 #endif
