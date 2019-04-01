@@ -56,7 +56,8 @@ int main(int argc, char **argv) {
     //Fazer um read e testar com o cansend
     canMI.canRead();
 
-    std::cout << first - ros::Time::now() << std::endl;
+    ros::Duration diff = ros::Time::now() - first;
+    std::cout << diff << std::endl;
  
     /*while (ros::ok()) {
         //Check if master is running
