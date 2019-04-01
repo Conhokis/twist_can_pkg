@@ -31,15 +31,11 @@ int main(int argc, char **argv) {
     //Start node interface with connection name and controller node-id
     canMotorInterface canMI(interface_id, node_id1, node_id2);
 
-    //Fazer um read e testar com o cansend
-    //canMI.canRead();
-
-    //Fazer um write e ler com o candump
-    canMI.canTestWrite();
+    
 
 //=============================================
 //Pegar nisto só depois de ter o can feito lol
-/*
+
     //ROS CONFIGURTIONS
     //Configurations of the node
     ros::init(argc, argv, "example_node");
@@ -51,21 +47,26 @@ int main(int argc, char **argv) {
     
     //Subscribe to /cmd_vel
     ros::Subscriber sub = n.subscribe("/cmd_vel", 10, updateSpeed);
+
+    ros::Time first = ros::Time::now();
+
+    //Fazer um write e ler com o candump
+    canMI.canTestWrite();
+    //Fazer um read e testar com o cansend
+    canMI.canRead();
+
+    std::cout << first - ros::Time::now() << std::endl;
  
-
-
-    while (ros::ok()) {
+    /*while (ros::ok()) {
         //Check if master is running
         ros::spinOnce();
 
-
         if((ros::Time::now() - start_time) > TWIST_TIMEOUT) {
             std::cout << "No messages received" << std::endl;
-
-            
-
             count = 0;
         }
+
+        
 
         loop_rate.sleep();
     }*/
