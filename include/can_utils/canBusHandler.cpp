@@ -179,7 +179,6 @@ void canBusHandler::readCanFrame() {
 		msg.msg_flags = 0;
 
 		nbytes = recvmsg(read_s, &msg, 0);
-		std::cout << nbytes << std::endl;
 
 		if (nbytes < 0) {
 			perror("read");
@@ -191,8 +190,10 @@ void canBusHandler::readCanFrame() {
 		}
 		
 		fprint_long_canframe(stdout, &frame, NULL, 0);
-		//Aqui tem que fazer uma cópia do frame e retornar, se for preciso depois faço umas funções para dar parse à frame baseado no lib.c
 		printf("\n");
+		//Return string completa, se for preciso depois faço umas funções para dar parse à frame baseado no lib.c
+		printf("%x\n", can_frame.can_id);
+		
 	}
 }
 
