@@ -4,7 +4,7 @@
 #include "canUtils.h"
 #include <iostream>
 
-canMotorInterface::canMotorInterface(const char* canInterface, const char* node_id) {
+canMotorInterface::canMotorInterface(const char* canInterface, const int node_id) {
 	//Intitialize canBusHandler which creates and mantains the sockets
 	//Save NODE ID
 	_node_id = node_id;
@@ -36,8 +36,8 @@ void canMotorInterface::canTestWrite() {
 
 bool canMotorInterface::checkFrame(can_frame frame) {
 	bool check = false;
-	for(i = 0; i < N_EXCLUSIONS; i++) {
-		if(frame.can_id == id_excl) {
+	for(int i = 0; i < N_EXCLUSIONS; i++) {
+		if(frame->can_id == id_excl) {
 			check = true;
 			break;
 		}
