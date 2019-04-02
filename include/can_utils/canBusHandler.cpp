@@ -15,10 +15,15 @@
 
 #include <sys/time.h>
 #include <sys/types.h>
+
 #include <sys/ioctl.h>
 #include <sys/uio.h>
 #include <net/if.h>
-
+/*
+#include <sys/socket.h>
+#include <linux/can.h>
+#include <linux/can/raw.h>
+*/
 extern "C" {
 	#include "lib.h"
 }
