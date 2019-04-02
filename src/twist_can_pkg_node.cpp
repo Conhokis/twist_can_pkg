@@ -3,6 +3,9 @@
 #include <geometry_msgs/Twist.h>
 #include <ros/time.h>
 #include <iostream>
+
+//For modifying shutdown
+#include <ros/xmlrpc_manager.h>
 #include <signal.h>
 
 //Include for can interface
@@ -15,6 +18,14 @@ ros::Time start_time;
 #define MIN_HITS_KEY 5
 unsigned int count = 0;
 
+// Signal-safe flag for whether shutdown is requested
+sig_atomic_t volatile g_request_shutdown = 0;
+
+void mySigIntHandler(int sig)
+{
+    g_request_shutdown = 1;
+}
+
 void updateTwistSpeed(const geometry_msgs::Twist::ConstPtr& msg) {
     start_time = ros::Time::now();
 
@@ -23,8 +34,9 @@ void updateTwistSpeed(const geometry_msgs::Twist::ConstPtr& msg) {
     else std::cout << "Receiving messages" << std::endl;
 }
 
-void systemPowerOff(int s) {
-    printf("teste\n");
+void shutdownCallback(XmlRpc::XmlRpcValue& params, XmlRpc::XmlRpcValue& result)
+{
+    std::cout << "teste\n" << std::endl;
 }
 
 int main(int argc, char **argv) {
@@ -36,18 +48,16 @@ int main(int argc, char **argv) {
     //Start node interface with connection name and controller node-id
     //canMotorInterface canMI(interface_id, node_id1);
 
-    //For catching a ctrl-c event
-    struct sigaction sigIntHandler;
-    sigIntHandler.sa_handler = systemPowerOff;
-    sigemptyset(&sigIntHandler.sa_mask);
-    sigIntHandler.sa_flags = 0;
-    sigaction(SIGINT, &sigIntHandler, NULL);
-
     //ROS CONFIGURTIONS
     //Configurations of the node
-    ros::init(argc, argv, "example_node");
+    ros::init(argc, argv, "example_node", ros::init_options::NoSigintHandler);
     ros::NodeHandle n("~");
     ros::Rate loop_rate(100);
+
+    //Configuration for catching shutdown event
+    signal(SIGINT, mySigIntHandler);
+    ros::XMLRPCManager::instance()->unbind("shutdown");
+    ros::XMLRPCManager::instance()->bind("shutdown", shutdownCallback);
 
     //Subscribe to /cmd_vel
     ros::Subscriber sub = n.subscribe("/cmd_vel", 10, updateTwistSpeed);
@@ -59,7 +69,7 @@ int main(int argc, char **argv) {
     //canMI.canTestWrite();
     //canMI.canRead();
     
-    while (ros::ok()) {
+    while (ros::ok() && !g_request_shutdown) {
         //Check if master is running
         ros::spinOnce();
 
@@ -70,4 +80,6 @@ int main(int argc, char **argv) {
 
         loop_rate.sleep();
     }
+
+    ros::shutdown();
 }
