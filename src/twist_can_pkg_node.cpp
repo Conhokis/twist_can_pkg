@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
     const unsigned int node_id2 = 0x12;
 
     //Start node interface with connection name and controller node-id
-    canMotorInterface canMI(interface_id, node_id1);
+    //canMotorInterface canMI(interface_id, node_id1);
 
     //For catching a ctrl-c event
     struct sigaction sigIntHandler;

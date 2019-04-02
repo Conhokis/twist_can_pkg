@@ -24,8 +24,6 @@ void canMotorInterface::canRead() {
 	while(checkFrame(buff_frame)) {
 		buff_frame = canBH->readCanFrame();
 	}
-
-	printf("%x\n", buff_frame.can_id);
 }
 
 void canMotorInterface::canTestWrite() {
