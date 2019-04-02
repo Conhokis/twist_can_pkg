@@ -36,8 +36,7 @@ static volatile int running = 1;
 
 
 canBusHandler::canBusHandler(const char* can_interface) {
-	//Inicialização de varáveis desconhecidas para já
-	//Guardar os valores necessários para a conexão, nomeadamente as sockets e assim
+	//Name of the can inteface
 	_can_interface = can_interface;
 	
 	//Variables necessary for creating and binding to socket
@@ -150,7 +149,7 @@ canBusHandler::canBusHandler(const char* can_interface) {
 	addr_write = &addr_w;
 }
 
-void canBusHandler::readCanFrame() {
+can_frame canBusHandler::readCanFrame() {
 	
 
 	struct msghdr msg;
@@ -189,11 +188,7 @@ void canBusHandler::readCanFrame() {
 			fprintf(stderr, "read: incomplete CAN frame\n");
 		}
 		
-		fprint_long_canframe(stdout, &frame, NULL, 0);
-		printf("\n");
-		//Return string completa, se for preciso depois faço umas funções para dar parse à frame baseado no lib.c
-		printf("%x\n", can_frame.can_id);
-		
+		return frame;
 	}
 }
 
