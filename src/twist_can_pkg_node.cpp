@@ -25,8 +25,8 @@ void updateSpeed(const geometry_msgs::Twist::ConstPtr& msg) {
 int main(int argc, char **argv) {
 
     const char* interface_id = "can0";
-    const int node_id1 = 11;
-    const int node_id2 = 12;
+    const unsigned int node_id1 = 0x11;
+    const unsigned int node_id2 = 0x12;
 
     //Start node interface with connection name and controller node-id
     canMotorInterface canMI(interface_id, node_id1);
