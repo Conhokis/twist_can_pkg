@@ -10,7 +10,7 @@ canMotorInterface::canMotorInterface(const char* canInterface, const int node_id
 	_node_id = node_id;
 
 	//Add exclusions. Page 98 of C5-E motor controller manual.
-	id_excl = {600};
+	id_excl[0] = {600};
 
 	//Start canBusHandler, manages connection and executes read and write functions
 	canBH = new canBusHandler(canInterface);
@@ -37,7 +37,7 @@ void canMotorInterface::canTestWrite() {
 bool canMotorInterface::checkFrame(can_frame frame) {
 	bool check = false;
 	for(int i = 0; i < N_EXCLUSIONS; i++) {
-		if(frame->can_id == id_excl) {
+		if(frame.can_id == id_excl) {
 			check = true;
 			break;
 		}

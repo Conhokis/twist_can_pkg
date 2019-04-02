@@ -1,5 +1,4 @@
 #include "canBusHandler.h"
-#include <linux/can.h>
 
 #define N_EXCLUSIONS 1
 
@@ -8,7 +7,7 @@ class canMotorInterface {
 private:
 	//TODO: Create object in this constructor and the constructor of the other object initializes the can interface
 	//canBusHandler can_handler;
-	const int _node_id;
+	int _node_id;
 	canBusHandler* canBH;
 	int id_excl[N_EXCLUSIONS]; //CAN-ID exclusions for ignoring messages sent by self
 
