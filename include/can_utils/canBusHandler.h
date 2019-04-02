@@ -1,6 +1,7 @@
 //Abstraction layer for the CAN protocol
 #include <linux/can.h>
 #include <linux/can/raw.h>
+#include <sys/socket.h>
 
 #define MAXSOCK 16
 
