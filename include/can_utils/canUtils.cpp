@@ -37,7 +37,7 @@ void canMotorInterface::canTestWrite() {
 bool canMotorInterface::checkFrame(can_frame frame) {
 	bool check = false;
 	for(int i = 0; i < N_EXCLUSIONS; i++) {
-		if(frame.can_id == id_excl[i]) {
+		if(frame.can_id == id_excl[i] + _node_id) {
 			check = true;
 			break;
 		}

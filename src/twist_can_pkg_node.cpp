@@ -52,8 +52,6 @@ int main(int argc, char **argv) {
 
     //Fazer um write e ler com o candump
     canMI.canTestWrite();
-    //Fazer um read e testar com o cansend
-    canMI.canRead();
 
     canMI.canRead();
 
