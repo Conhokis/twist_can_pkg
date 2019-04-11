@@ -222,6 +222,10 @@ uint8_t* canBusHandler::readCanMsg() {
 
 bool canBusHandler::checkFrame(can_frame frame) {
 	bool check = false;
+
+	printf("%d\n", frame.can_id);
+	printf("%x\n", frame.can_id);
+
 	for(int i = 0; i < N_EXCLUSIONS; i++) {
 		if(frame.can_id == (id_excl[i])) {
 			check = true;
