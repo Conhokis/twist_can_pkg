@@ -25,19 +25,27 @@ void canMotorInterface::canTestWrite() {
 	_canBH->writeCanFrame(buff);
 }
 
-bool canMotorInterface::checkMotorStatus() {
-	_canBH->writeCanFrame(concDataId("#4041600000000000", 0x600));
-	uint8_t *read_data = _canBH->readCanMsg();
+void canMotorInterface::checkMotorStatus() {
+	std::cout << "Checking for motors..." << std::endl;
 
-	printf("%x\n", read_data[0]);
-	printf("%x\n", read_data[1]);
-	printf("%x\n", read_data[2]);
+	_canBH->writeCanFrame(concDataId("#4041600000000000", 0x600));
+	//uint8_t *read_data = _canBH->readCanMsg();
+	_canBH->readCanMsg();
+
+	std::cout << "Motors found! Starting motor power up." << std::endl;
 }
 
 void canMotorInterface::powerOnMotor() {
-	//printf("%s\n", concDataId("#4041600000000000", 0x600));
+	//Set velocity mode
+	_canBH->writeCanFrame(concDataId("#2360600002000000", 0x600));
 
+	_canBH->writeCanFrame(concDataId("#4060610000000000", 0x600));
+	uint8_t *read_data;
+	do {
+		read_data = _canBH->readCanMsg();
+	} while(read_data[4])
 
+	
 }
 
 char* canMotorInterface::concDataId(char* str_data, unsigned int can_cmd) {

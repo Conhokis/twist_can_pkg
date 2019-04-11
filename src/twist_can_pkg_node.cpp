@@ -69,12 +69,16 @@ int main(int argc, char **argv) {
     //Subscribe to /cmd_vel
     ros::Subscriber sub = n.subscribe("/cmd_vel", 10, updateTwistSpeed);
 
+    //To check if theres is input or not from twist_cmd_vel
     ros::Duration TWIST_TIMEOUT = ros::Duration(0.1);
     start_time = ros::Time::now() - TWIST_TIMEOUT;    
 
+    //Sends a message to the motor and waits for the receive
     canMI.checkMotorStatus();
 
-    /*
+    //Power on motor
+    canMI.powerOnMotor();
+    
     while (ros::ok() && !g_request_shutdown) {
         //Check if master is running
         ros::spinOnce();
@@ -86,7 +90,7 @@ int main(int argc, char **argv) {
         }
 
         loop_rate.sleep();
-    }*/
+    }
 
     ros::shutdown();
 }
