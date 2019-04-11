@@ -36,13 +36,13 @@ static volatile int running = 1;
 #define ANYDEV "any"
 
 
-canBusHandler::canBusHandler(const char* can_interface, unsigned int node_id[]) {
+canBusHandler::canBusHandler(const char* can_interface, unsigned int *node_id, size_t size_node_id) {
 	//Name of the can inteface
 	_can_interface = can_interface;
 
 	//Add exclusions. Page 98 of C5-E motor controller manual.
-	id_excl = malloc(sizeof(node_id));
-	N_EXCLUSIONS = sizeof(node_id) / sizeof(node_id[0]);
+	id_excl = (int*) malloc(size_node_id);
+	N_EXCLUSIONS = size_node_id / sizeof(node_id[0]);
 
 	for(int iter = 0; iter++; iter < N_EXCLUSIONS)
 		id_excl[iter] = node_id[iter] + 0x600;
