@@ -29,12 +29,14 @@ sig_atomic_t volatile g_request_shutdown = 0;
 void mySigIntHandler(int sig)
 {
     canMI.shutdownMotor();
+    exit(0);
 }
 
 //Catches roskill events
 void shutdownCallback(XmlRpc::XmlRpcValue& params, XmlRpc::XmlRpcValue& result)
 {
     canMI.shutdownMotor();
+    exit(0);
 }
 
 //=============================================================
