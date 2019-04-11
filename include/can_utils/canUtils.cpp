@@ -23,7 +23,8 @@ void canMotorInterface::canTestRead() {
 		buff_frame = _canBH->readCanFrame();
 	}*/
 
-	static uint8_t* data = _canBH->readCanMsg();
+	uint8_t* data = _canBH->readCanMsg();
+	printf("%x\n", data[0]);
 }
 
 void canMotorInterface::canTestWrite() {
