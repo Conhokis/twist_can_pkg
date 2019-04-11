@@ -197,13 +197,14 @@ can_frame canBusHandler::readCanFrame() {
 uint8_t* canBusHandler::readCanMsg() {
 	//8 is number of bytes in CAN data frame
 	static uint8_t final_data[8]
-	can_frame buff_frame = readCanFrame();
+	struct can_frame buff_frame;
+	buff_frame = readCanFrame();
 
 	while(checkFrame(buff_frame)) {
 		buff_frame = readCanFrame();
 	}
 
-	return buff_frame.data;
+	return 0;
 }
 
 void canBusHandler::writeCanFrame(char* str_frame) {
