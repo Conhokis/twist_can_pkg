@@ -41,7 +41,7 @@ canBusHandler::canBusHandler(const char* can_interface, unsigned int *node_id, s
 	_can_interface = can_interface;
 
 	//Add exclusions. Page 98 of C5-E motor controller manual.
-	id_excl = (int*) malloc(size_node_id);
+	id_excl = (unsigned int*) malloc(size_node_id);
 	N_EXCLUSIONS = size_node_id / sizeof(node_id[0]);
 
 	for(int iter = 0; iter++; iter < N_EXCLUSIONS)
@@ -154,7 +154,6 @@ canBusHandler::canBusHandler(const char* can_interface, unsigned int *node_id, s
 }
 
 can_frame canBusHandler::readCanFrame() {
-	
 
 	struct msghdr msg;
 	struct can_frame frame;
@@ -174,7 +173,6 @@ can_frame canBusHandler::readCanFrame() {
 	FD_SET(read_s, &rdfs);
 
 	if (FD_ISSET(read_s, &rdfs)) {
-
 		/* these settings may be modified by recvmsg() */
 		iov.iov_len = sizeof(frame);
 		msg.msg_namelen = sizeof(addr_read);
