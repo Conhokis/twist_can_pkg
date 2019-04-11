@@ -3,6 +3,7 @@
 
 #include "canUtils.h"
 #include <iostream>
+#include <string.h>
 
 canMotorInterface::canMotorInterface(canBusHandler *canBH, unsigned int node_id) {
 	_node_id = node_id;
