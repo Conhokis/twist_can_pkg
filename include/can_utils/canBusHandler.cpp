@@ -39,6 +39,9 @@ static volatile int running = 1;
 canBusHandler::canBusHandler(const char* can_interface) {
 	//Name of the can inteface
 	_can_interface = can_interface;
+
+	//Add exclusions. Page 98 of C5-E motor controller manual.
+	id_excl[0] = 0x600;
 	
 	//Variables necessary for creating and binding to socket
 	int rcvbuf_size = 0;
@@ -110,7 +113,6 @@ canBusHandler::canBusHandler(const char* can_interface) {
 		read_s = s[i];
 		addr_read = &addr;
 	}
-
 	
 
 	int s_w; /* can raw socket */ 
@@ -125,8 +127,6 @@ canBusHandler::canBusHandler(const char* can_interface) {
 
 	addr_w.can_family = AF_CAN;
 
-	
-
 	strcpy(ifr_w.ifr_name, _can_interface);
 	if (ioctl(s_w, SIOCGIFINDEX, &ifr_w) < 0) {
 		perror("SIOCGIFINDEX");
@@ -139,12 +139,8 @@ canBusHandler::canBusHandler(const char* can_interface) {
 	/* little (really a very little!) CPU usage.                          */
 	setsockopt(s_w, SOL_CAN_RAW, CAN_RAW_FILTER, NULL, 0);
 
-	
-
 	if (bind(s_w, (struct sockaddr *)&addr_w, sizeof(addr_w)) < 0) {
 		perror("bind");	}
-
-			
 
 	write_s = s_w;
 	addr_write = &addr_w;
@@ -193,6 +189,20 @@ can_frame canBusHandler::readCanFrame() {
 	}
 }
 
+uint8_t* canBusHandler::readCanMsg() {
+	struct can_frame buff_frame;
+	//8 is number of bytes in CAN data frame
+	static final_data[8]
+
+	buff_frame = readCanFrame();
+
+	while(checkFrame(buff_frame)) {
+		buff_frame = readCanFrame();
+	}
+
+	return buff_frame.final_data;
+}
+
 void canBusHandler::writeCanFrame(char* str_frame) {
 	struct can_frame frame;
 	int nbytes;
@@ -202,6 +212,18 @@ void canBusHandler::writeCanFrame(char* str_frame) {
 	if((nbytes = write(write_s, &frame, sizeof(frame))) != sizeof(frame)) {
 		perror("write");
 	}
+}
+
+bool canBusHandler::checkFrame(can_frame frame) {
+	bool check = false;
+	for(int i = 0; i < N_EXCLUSIONS; i++) {
+		if(frame.can_id == (id_excl[i] + _node_id)) {
+			check = true;
+			break;
+		}
+	}
+
+	return check;
 }
 
 #endif
