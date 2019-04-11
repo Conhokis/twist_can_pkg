@@ -19,7 +19,7 @@ private:
 	
 	//Reads a can frame from the bus, there are protections with checkFrame so it excludes
 	//the frame when it reads what we write to the bus
-	can_frame readCanFrame();
+	struct can_frame readCanFrame();
 	//Checks the frame can-id to determine if message was sent from the client or the controller
 	bool checkFrame(can_frame frame);
 
