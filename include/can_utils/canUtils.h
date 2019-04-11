@@ -7,6 +7,8 @@ private:
 	unsigned int _node_id;
 	canBusHandler *_canBH;
 	
+	//Correctly returns a string in hex that is ready to be parsed and sent
+	char* concDataId();
 public:
 	canMotorInterface(canBusHandler *canBH, unsigned int node_id); 
 

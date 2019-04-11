@@ -13,8 +13,6 @@
 
 //Connection information
 const char* interface_id = "can0";
-//const unsigned int node_id1 = 0x11;
-//const unsigned int node_id2 = 0x12;
 unsigned int node_id[] = {0x11, 0x12};
 size_t size_node_id = sizeof(node_id);
 //Start canBusHandler, manages connection and executes read and write functions
@@ -74,7 +72,8 @@ int main(int argc, char **argv) {
     ros::Duration TWIST_TIMEOUT = ros::Duration(0.1);
     start_time = ros::Time::now() - TWIST_TIMEOUT;    
     
-    canMI.canTestRead();
+    //canMI.canTestRead();
+    canMi.powerOnMotor();
 
     /*
     while (ros::ok() && !g_request_shutdown) {

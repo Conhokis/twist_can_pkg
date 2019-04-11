@@ -40,20 +40,12 @@ canBusHandler::canBusHandler(const char* can_interface, unsigned int *node_id, s
 	//Name of the can inteface
 	_can_interface = can_interface;
 
-	printf("%x\n", node_id[0]);
-	printf("%x\n", node_id[1]);
-
 	//Add exclusions. Page 98 of C5-E motor controller manual.
 	id_excl = (unsigned int*) malloc(size_node_id);
 	N_EXCLUSIONS = size_node_id / sizeof(node_id[0]);
 
-	printf("%x\n", N_EXCLUSIONS);
-
 	for(int iter = 0; iter++; iter < N_EXCLUSIONS)
 		id_excl[iter] = node_id[iter] + 600;
-
-	printf("%x\n", node_id[0]);
-	printf("%x\n", node_id[1]);
 	
 	//Variables necessary for creating and binding to socket
 	int rcvbuf_size = 0;

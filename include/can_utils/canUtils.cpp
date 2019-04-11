@@ -14,15 +14,6 @@ void canMotorInterface::shutdownMotor() {
 }
 
 void canMotorInterface::canTestRead() {
-	/*
-	struct can_frame buff_frame;
-
-	buff_frame = _canBH->readCanFrame();
-
-	while(checkFrame(buff_frame)) {
-		buff_frame = _canBH->readCanFrame();
-	}*/
-
 	uint8_t* data = _canBH->readCanMsg();
 	printf("%x\n", data[0]);
 }
@@ -33,6 +24,21 @@ void canMotorInterface::canTestWrite() {
 	_canBH->writeCanFrame(buff);
 }
 
+void canMotorInterface::powerOnMotor() {
+	printf("%s\n", concDataId("#4041600000000000"));
+}
 
+char* canMotorInterface::concDataId(char* str_data) {
+	static char[20] str_buff;	
+
+	if(_node_id > 15) sprintf(str_buff, "00%x", _node_id);
+	else if(_node_id > 255) sprintf(str_buff, "0%x", _node_id);
+	else sprintf(str_buff, "%x", _node_id);
+
+	printf("%s\n", str_buff);
+
+	strcat(str_buff, str_data);
+	return str_buff;
+}
 
 #endif
