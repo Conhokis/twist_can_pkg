@@ -37,7 +37,7 @@ void canMotorInterface::checkMotorStatus() {
 
 void canMotorInterface::powerOnMotor() {
 	//Set velocity mode
-	_canBH->writeCanFrame(concDataId("#2360600002000000", 0x600));
+	_canBH->writeCanFrame(concDataId("#2F60600002000000", 0x600));
 
 	_canBH->writeCanFrame(concDataId("#4060610000000000", 0x600));
 	uint8_t *read_data;
