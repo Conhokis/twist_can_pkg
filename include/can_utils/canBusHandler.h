@@ -25,7 +25,7 @@ private:
 
 public:
 	//Criação das sockets para comunicar é feita no construtor do handler
-	canBusHandler(const char* can_interface, unsigned int node_id[]);
+	canBusHandler(const char* can_interface, unsigned int *node_id, size_t size_node_id);
 
 	//Reads the bus and returns a string representation of the CAN message
 	uint8_t* readCanMsg();

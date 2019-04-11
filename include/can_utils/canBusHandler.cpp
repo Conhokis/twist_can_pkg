@@ -199,7 +199,7 @@ can_frame canBusHandler::readCanFrame() {
 uint8_t* canBusHandler::readCanMsg() {
 	struct can_frame buff_frame;
 	//8 is number of bytes in CAN data frame
-	static final_data[8]
+	static uint8_t final_data[8]
 
 	buff_frame = readCanFrame();
 
@@ -207,7 +207,7 @@ uint8_t* canBusHandler::readCanMsg() {
 		buff_frame = readCanFrame();
 	}
 
-	return buff_frame.final_data;
+	return buff_frame.data;
 }
 
 void canBusHandler::writeCanFrame(char* str_frame) {
@@ -224,7 +224,7 @@ void canBusHandler::writeCanFrame(char* str_frame) {
 bool canBusHandler::checkFrame(can_frame frame) {
 	bool check = false;
 	for(int i = 0; i < N_EXCLUSIONS; i++) {
-		if(frame.can_id == (id_excl[i] + _node_id)) {
+		if(frame.can_id == (id_excl[i])) {
 			check = true;
 			break;
 		}
