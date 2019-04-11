@@ -44,8 +44,10 @@ canBusHandler::canBusHandler(const char* can_interface, unsigned int *node_id, s
 	id_excl = (unsigned int*) malloc(size_node_id);
 	N_EXCLUSIONS = size_node_id / sizeof(node_id[0]);
 
+	printf("%d\n", N_EXCLUSIONS);
+
 	for(int iter = 0; iter++; iter < N_EXCLUSIONS)
-		id_excl[iter] = node_id[iter] + 600;
+		id_excl[iter] = node_id[iter] + 0x600;
 
 	printf("%d\n", node_id[0]);
 	printf("%d\n", node_id[1]);
