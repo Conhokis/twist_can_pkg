@@ -16,6 +16,11 @@ canMotorInterface::canMotorInterface(const char* canInterface, const unsigned in
 	canBH = new canBusHandler(canInterface);
 }
 
+void canMotorInterface::shutdownMotor() {
+
+	
+}
+
 void canMotorInterface::canRead() {
 	struct can_frame buff_frame;
 

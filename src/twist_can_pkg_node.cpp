@@ -21,12 +21,15 @@ unsigned int count = 0;
 // Signal-safe flag for whether shutdown is requested
 sig_atomic_t volatile g_request_shutdown = 0;
 
+//Catches ctrl-c events
 void mySigIntHandler(int sig)
 {
     g_request_shutdown = 1;
     std::cout << "teste2" << std::endl;
+    
 }
 
+//Catches rosnode kill events
 void updateTwistSpeed(const geometry_msgs::Twist::ConstPtr& msg) {
     start_time = ros::Time::now();
 

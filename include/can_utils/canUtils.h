@@ -16,6 +16,7 @@ private:
 public:
 	canMotorInterface(const char* canInterface, const unsigned int node_id); 
 
+	void shutdownMotor();
 	void canRead();
 	void canTestWrite();
 };
