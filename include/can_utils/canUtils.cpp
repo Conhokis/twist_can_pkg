@@ -41,9 +41,9 @@ void canMotorInterface::powerOnMotor() {
 	_canBH->writeCanFrame(concDataId("#2F60600002000000", 0x600));
 
 	//Check if velocity mode is set
-	_canBH->writeCanFrame(concDataId("#4061600000000000", 0x600));
 	uint8_t *read_data;
 	do {
+		_canBH->writeCanFrame(concDataId("#4061600000000000", 0x600));
 		read_data = _canBH->readCanMsg();
 	} while(read_data[4] != 0x02); //Byte 5 is the start of the data in the frame
 
@@ -57,7 +57,7 @@ void canMotorInterface::powerOnMotor() {
 	do {
 		_canBH->writeCanFrame(concDataId("#4041600000000000", 0x600));
 		read_data = _canBH->readCanMsg();
-	} while(((read_data[4] & 0b000010001) != 17) || ((read_data[5] & 0b00000001) != 1));
+	} while(((read_data[4] & 0b00010001) != 33) || ((read_data[5] & 0b00000010) != 2));
 
 	std::cout << "Ready to switch on!" << std::endl;
 }
