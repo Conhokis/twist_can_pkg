@@ -52,7 +52,7 @@ void canMotorInterface::powerOnMotor() {
 	_canBH->writeCanFrame(concDataId("#2F40600006000000", 0x600));
 	do {
 		read_data = _canBH->readCanMsg();
-	} while(((read_data[4] & 0b000010001) == 17) && ((read_data[5] & 0b00000001) == 1));
+	} while(((read_data[4] & 0b000010001) != 17) || ((read_data[5] & 0b00000001) != 1));
 
 	std::cout << "Ready to switch on!" << std::endl;
 }
