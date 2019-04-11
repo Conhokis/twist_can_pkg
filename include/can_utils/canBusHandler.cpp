@@ -189,6 +189,8 @@ can_frame canBusHandler::readCanFrame() {
 		
 			fprintf(stderr, "read: incomplete CAN frame\n");
 		}
+
+		printf("LEU\n");
 		
 		return frame;
 	}
