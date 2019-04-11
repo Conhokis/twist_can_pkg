@@ -186,8 +186,6 @@ can_frame canBusHandler::readCanFrame() {
 		
 			fprintf(stderr, "read: incomplete CAN frame\n");
 		}
-
-		printf("LEU\n");
 		
 		return frame;
 	}
@@ -225,6 +223,7 @@ bool canBusHandler::checkFrame(can_frame frame) {
 
 	printf("%d\n", frame.can_id);
 	printf("%x\n", frame.can_id);
+	printf("%d\n", id_excl[0]);
 
 	for(int i = 0; i < N_EXCLUSIONS; i++) {
 		if(frame.can_id == (id_excl[i])) {
