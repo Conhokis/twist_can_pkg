@@ -15,7 +15,7 @@
 const char* interface_id = "can0";
 //const unsigned int node_id1 = 0x11;
 //const unsigned int node_id2 = 0x12;
-const unsigned int node_id[] = {0x11, 0x12};
+unsigned int node_id[] = {0x11, 0x12};
 size_t size_node_id = sizeof(node_id);
 //Start canBusHandler, manages connection and executes read and write functions
 canBusHandler* canBH = new canBusHandler(interface_id, node_id, size_node_id);  
