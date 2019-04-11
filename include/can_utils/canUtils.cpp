@@ -32,8 +32,8 @@ void canMotorInterface::powerOnMotor() {
 char* canMotorInterface::concDataId(char* str_data) {
 	static char str_buff[20];	
 
-	if(_node_id > 15) sprintf(str_buff, "00%x", _node_id);
-	else if(_node_id > 255) sprintf(str_buff, "0%x", _node_id);
+	if(_node_id < 16) sprintf(str_buff, "00%x", _node_id);
+	else if(_node_id < 256) sprintf(str_buff, "0%x", _node_id);
 	else sprintf(str_buff, "%x", _node_id);
 
 	printf("%s\n", str_buff);
