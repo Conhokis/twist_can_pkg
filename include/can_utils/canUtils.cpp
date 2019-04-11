@@ -39,13 +39,22 @@ void canMotorInterface::powerOnMotor() {
 	//Set velocity mode
 	_canBH->writeCanFrame(concDataId("#2F60600002000000", 0x600));
 
-	_canBH->writeCanFrame(concDataId("#4060610000000000", 0x600));
+	_canBH->writeCanFrame(concDataId("#4061600000000000", 0x600));
 	uint8_t *read_data;
 	do {
 		read_data = _canBH->readCanMsg();
-	} while(read_data[4]);
+	} while(read_data[4] != 0x02); //Byte 5 is the start of the data in the frame
 
+	//Set target velocity to 0
+	_canBH->writeCanFrame(concDataId("#2B42600000000000", 0x600));
 
+	//Set motor ready to switch on
+	_canBH->writeCanFrame(concDataId("#2F60600006000000", 0x600));
+	do {
+		read_data = _canBH->readCanMsg();
+	} while(((read_data[4] & 0b000010001) == 17) && ((read_data[5] & 0b00000001) == 1));
+
+	std::cout << "Ready to switch on!" << std::endl;
 }
 
 char* canMotorInterface::concDataId(char* str_data, unsigned int can_cmd) {
