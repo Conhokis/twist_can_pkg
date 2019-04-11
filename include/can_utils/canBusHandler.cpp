@@ -42,8 +42,9 @@ canBusHandler::canBusHandler(const char* can_interface, unsigned int node_id[]) 
 
 	//Add exclusions. Page 98 of C5-E motor controller manual.
 	id_excl = malloc(sizeof(node_id));
+	N_EXCLUSIONS = sizeof(node_id) / sizeof(node_id[0]);
 
-	for(int iter = 0; iter++; iter < (sizeof(node_id) / sizeof(node_id[0])))
+	for(int iter = 0; iter++; iter < N_EXCLUSIONS)
 		id_excl[iter] = node_id[iter] + 0x600;
 
 	printf("%x\n", id_excl[0]);
