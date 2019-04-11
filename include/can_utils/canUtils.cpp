@@ -27,7 +27,7 @@ void canMotorInterface::canTestWrite() {
 
 bool canMotorInterface::checkMotorStatus() {
 	_canBH->writeCanFrame(concDataId("#4041600000000000", 0x600));
-	uint8_t read_data[8] = _canBH->readCanMsg();
+	uint8_t *read_data = _canBH->readCanMsg();
 
 	printf("%x\n", read_data[0]);
 	printf("%x\n", read_data[1]);
