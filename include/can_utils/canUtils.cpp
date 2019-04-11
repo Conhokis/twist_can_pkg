@@ -43,9 +43,9 @@ void canMotorInterface::powerOnMotor() {
 	uint8_t *read_data;
 	do {
 		read_data = _canBH->readCanMsg();
-	} while(read_data[4])
+	} while(read_data[4]);
 
-	
+
 }
 
 char* canMotorInterface::concDataId(char* str_data, unsigned int can_cmd) {
