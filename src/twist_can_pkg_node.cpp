@@ -16,8 +16,10 @@ const char* interface_id = "can0";
 const unsigned int node_id1 = 0x11;
 const unsigned int node_id2 = 0x12;
 
+const unsigned int node_id[] = {0x11, 0x12};
+
 //Start node interface with connection name and controller node-id
-canMotorInterface canMI(interface_id, node_id1);
+canMotorInterface canMI(interface_id, node_id);
 
 // Signal-safe flag for whether shutdown is requested
 sig_atomic_t volatile g_request_shutdown = 0;

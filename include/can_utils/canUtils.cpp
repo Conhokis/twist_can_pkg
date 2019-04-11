@@ -4,7 +4,7 @@
 #include "canUtils.h"
 #include <iostream>
 
-canMotorInterface::canMotorInterface(const char* canInterface, const unsigned int node_id) {
+canMotorInterface::canMotorInterface(const char* canInterface, const unsigned int node_id[]) {
 	//Intitialize canBusHandler which creates and mantains the sockets
 	//Save NODE ID
 	_node_id = node_id;

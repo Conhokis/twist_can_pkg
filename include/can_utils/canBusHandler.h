@@ -4,7 +4,6 @@
 #include <linux/can/raw.h>
 #include <stdint.h>
 
-#define N_EXCLUSIONS 1
 #define MAXSOCK 16
 
 class canBusHandler {
@@ -15,7 +14,7 @@ private:
 	struct sockaddr_can *addr_write;
 	struct sockaddr_can *addr_read;
 
-	unsigned int id_excl[N_EXCLUSIONS]; //CAN-ID exclusions for ignoring messages sent by self
+	unsigned int *id_excl = NULL; //CAN-ID exclusions for ignoring messages sent by self
 	
 	//Reads a can frame from the bus, there are protections with checkFrame so it excludes
 	//the frame when it reads what we write to the bus
@@ -25,7 +24,7 @@ private:
 
 public:
 	//Criação das sockets para comunicar é feita no construtor do handler
-	canBusHandler(const char* can_interface);
+	canBusHandler(const char* can_interface, unsigned int node_id[]);
 
 	//Reads the bus and returns a string representation of the CAN message
 	uint8_t* readCanMsg();
