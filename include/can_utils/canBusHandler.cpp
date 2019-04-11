@@ -153,7 +153,7 @@ canBusHandler::canBusHandler(const char* can_interface, unsigned int *node_id, s
 	addr_write = &addr_w;
 }
 
-can_frame canBusHandler::readCanFrame() {
+struct can_frame canBusHandler::readCanFrame() {
 
 	struct msghdr msg;
 	struct can_frame frame;
