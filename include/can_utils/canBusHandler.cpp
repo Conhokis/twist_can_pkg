@@ -28,13 +28,11 @@ extern "C" {
 	#include "lib.h"
 }
 
-
 extern int optind, opterr, optopt;
 
 static volatile int running = 1;
 
 #define ANYDEV "any"
-
 
 canBusHandler::canBusHandler(const char* can_interface, unsigned int *node_id, size_t size_node_id) {
 	//Name of the can inteface
@@ -48,11 +46,6 @@ canBusHandler::canBusHandler(const char* can_interface, unsigned int *node_id, s
 
 	for(int iter = 0; iter < N_EXCLUSIONS; iter++)
 		id_excl[iter] = node_id[iter] + 0x600;
-
-	printf("%d\n", node_id[0]);
-	printf("%d\n", node_id[1]);
-	printf("%d\n", id_excl[0]);
-	printf("%d\n", id_excl[1]);
 	
 	//Variables necessary for creating and binding to socket
 	int rcvbuf_size = 0;
@@ -227,10 +220,6 @@ uint8_t* canBusHandler::readCanMsg() {
 
 bool canBusHandler::checkFrame(can_frame frame) {
 	bool check = false;
-
-	printf("%d\n", frame.can_id);
-	printf("%x\n", frame.can_id);
-	printf("%d\n", id_excl[0]);
 
 	for(int i = 0; i < N_EXCLUSIONS; i++) {
 		if(frame.can_id == (id_excl[i])) {

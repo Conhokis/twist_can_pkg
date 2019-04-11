@@ -26,7 +26,7 @@ void canMotorInterface::canTestWrite() {
 }
 
 void canMotorInterface::powerOnMotor() {
-	printf("%s\n", concDataId("#4041600000000000", 600));
+	printf("%s\n", concDataId("#4041600000000000", 0x600));
 }
 
 char* canMotorInterface::concDataId(char* str_data, unsigned int can_cmd) {
