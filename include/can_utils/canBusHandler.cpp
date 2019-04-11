@@ -194,6 +194,17 @@ can_frame canBusHandler::readCanFrame() {
 	}
 }
 
+void canBusHandler::writeCanFrame(char* str_frame) {
+	struct can_frame frame;
+	int nbytes;
+
+	parse_canframe(str_frame, &frame);
+
+	if((nbytes = write(write_s, &frame, sizeof(frame))) != sizeof(frame)) {
+		perror("write");
+	}
+}
+
 uint8_t* canBusHandler::readCanMsg() {
 	//8 is number of bytes in CAN data frame
 	static uint8_t final_data[8]
@@ -205,17 +216,6 @@ uint8_t* canBusHandler::readCanMsg() {
 	}
 
 	return 0;
-}
-
-void canBusHandler::writeCanFrame(char* str_frame) {
-	struct can_frame frame;
-	int nbytes;
-
-	parse_canframe(str_frame, &frame);
-
-	if((nbytes = write(write_s, &frame, sizeof(frame))) != sizeof(frame)) {
-		perror("write");
-	}
 }
 
 bool canBusHandler::checkFrame(can_frame frame) {
