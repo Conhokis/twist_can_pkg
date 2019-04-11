@@ -13,13 +13,13 @@
 
 //Connection information
 const char* interface_id = "can0";
-const unsigned int node_id1 = 0x11;
-const unsigned int node_id2 = 0x12;
-
+//const unsigned int node_id1 = 0x11;
+//const unsigned int node_id2 = 0x12;
 const unsigned int node_id[] = {0x11, 0x12};
-
+//Start canBusHandler, manages connection and executes read and write functions
+canBusHandler* canBH = new canBusHandler(interface_id, node_id);  
 //Start node interface with connection name and controller node-id
-canMotorInterface canMI(interface_id, node_id);
+canMotorInterface canMI(canBH, node_id[0]);
 
 // Signal-safe flag for whether shutdown is requested
 sig_atomic_t volatile g_request_shutdown = 0;

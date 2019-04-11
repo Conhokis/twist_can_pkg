@@ -14,7 +14,7 @@ private:
 	struct sockaddr_can *addr_write;
 	struct sockaddr_can *addr_read;
 
-	unsigned int *id_excl = NULL; //CAN-ID exclusions for ignoring messages sent by self
+	unsigned int *id_excl; //CAN-ID exclusions for ignoring messages sent by self
 	
 	//Reads a can frame from the bus, there are protections with checkFrame so it excludes
 	//the frame when it reads what we write to the bus
@@ -28,6 +28,6 @@ public:
 
 	//Reads the bus and returns a string representation of the CAN message
 	uint8_t* readCanMsg();
-	
+	//Writes the CAN frame to the bus, the 
 	void writeCanFrame(char* str_frame);
 };

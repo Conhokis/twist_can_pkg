@@ -4,13 +4,9 @@
 #include "canUtils.h"
 #include <iostream>
 
-canMotorInterface::canMotorInterface(const char* canInterface, const unsigned int node_id[]) {
-	//Intitialize canBusHandler which creates and mantains the sockets
-	//Save NODE ID
+canMotorInterface::canMotorInterface(canBusHandler *canBH, unsigned int node_id) {
 	_node_id = node_id;
-
-	//Start canBusHandler, manages connection and executes read and write functions
-	canBH = new canBusHandler(canInterface);
+	_canBH = canBH;
 }
 
 void canMotorInterface::shutdownMotor() {
@@ -27,7 +23,7 @@ void canMotorInterface::canTestRead() {
 		buff_frame = canBH->readCanFrame();
 	}*/
 
-	static uint8_t* data = canBH.readCanMsg();
+	static uint8_t* data = canBH->readCanMsg();
 }
 
 void canMotorInterface::canTestWrite() {
