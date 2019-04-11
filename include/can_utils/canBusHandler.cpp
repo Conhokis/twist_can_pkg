@@ -50,7 +50,10 @@ canBusHandler::canBusHandler(const char* can_interface, unsigned int *node_id, s
 	printf("%x\n", N_EXCLUSIONS);
 
 	for(int iter = 0; iter++; iter < N_EXCLUSIONS)
-		id_excl[iter] = node_id[iter] + 0x600;
+		id_excl[iter] = node_id[iter] + 600;
+
+	printf("%x\n", node_id[0]);
+	printf("%x\n", node_id[1]);
 	
 	//Variables necessary for creating and binding to socket
 	int rcvbuf_size = 0;
