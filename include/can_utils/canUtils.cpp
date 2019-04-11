@@ -28,6 +28,7 @@ void canMotorInterface::canTestWrite() {
 void canMotorInterface::checkMotorStatus() {
 	std::cout << "Checking for motors..." << std::endl;
 
+	//Read status word, 0x600 indicates this is an SDO (Service Data Object)
 	_canBH->writeCanFrame(concDataId("#4041600000000000", 0x600));
 	//uint8_t *read_data = _canBH->readCanMsg();
 	_canBH->readCanMsg();
@@ -39,6 +40,7 @@ void canMotorInterface::powerOnMotor() {
 	//Set velocity mode
 	_canBH->writeCanFrame(concDataId("#2F60600002000000", 0x600));
 
+	//Check if velocity mode is set
 	_canBH->writeCanFrame(concDataId("#4061600000000000", 0x600));
 	uint8_t *read_data;
 	do {
@@ -50,6 +52,9 @@ void canMotorInterface::powerOnMotor() {
 
 	//Set motor ready to switch on
 	_canBH->writeCanFrame(concDataId("#2B40600006000000", 0x600));
+
+	//Check if motor is ready to switch on
+	_canBH->writeCanFrame(concDataId("#4041600000000000", 0x600));
 	do {
 		read_data = _canBH->readCanMsg();
 	} while(((read_data[4] & 0b000010001) != 17) || ((read_data[5] & 0b00000001) != 1));
