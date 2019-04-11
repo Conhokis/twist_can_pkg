@@ -27,13 +27,15 @@ void canMotorInterface::canTestWrite() {
 
 void canMotorInterface::powerOnMotor() {
 	printf("%s\n", concDataId("#4041600000000000", 0x600));
+	printf("%s\n", concDataId("#4041600000000000", 0x60));
+	printf("%s\n", concDataId("#4041600000000000", 0x6));
 }
 
 char* canMotorInterface::concDataId(char* str_data, unsigned int can_cmd) {
 	static char str_buff[20];	
 
-	if(_node_id < 16) sprintf(str_buff, "00%x", _node_id + can_cmd);
-	else if(_node_id < 256) sprintf(str_buff, "0%x", _node_id + can_cmd);
+	if(_node_id + can_cmd < 16) sprintf(str_buff, "00%x", _node_id + can_cmd);
+	else if(_node_id + can_cmd < 256) sprintf(str_buff, "0%x", _node_id + can_cmd);
 	else sprintf(str_buff, "%x", _node_id + can_cmd);
 
 	printf("%s\n", str_buff);
