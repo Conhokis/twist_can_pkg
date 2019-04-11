@@ -54,8 +54,8 @@ void canMotorInterface::powerOnMotor() {
 	_canBH->writeCanFrame(concDataId("#2B40600006000000", 0x600));
 
 	//Check if motor is ready to switch on
-	_canBH->writeCanFrame(concDataId("#4041600000000000", 0x600));
 	do {
+		_canBH->writeCanFrame(concDataId("#4041600000000000", 0x600));
 		read_data = _canBH->readCanMsg();
 	} while(((read_data[4] & 0b000010001) != 17) || ((read_data[5] & 0b00000001) != 1));
 
