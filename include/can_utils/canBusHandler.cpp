@@ -216,7 +216,9 @@ uint8_t* canBusHandler::readCanMsg() {
 		buff_frame = readCanFrame();
 	}
 
-	return 0;
+	memcpy(final_data, buff_frame.data, sizeof(buff_frame.data))
+
+	return final_data;
 }
 
 bool canBusHandler::checkFrame(can_frame frame) {
