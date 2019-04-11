@@ -29,7 +29,7 @@ void canMotorInterface::powerOnMotor() {
 }
 
 char* canMotorInterface::concDataId(char* str_data) {
-	static char[20] str_buff;	
+	static char str_buff[20];	
 
 	if(_node_id > 15) sprintf(str_buff, "00%x", _node_id);
 	else if(_node_id > 255) sprintf(str_buff, "0%x", _node_id);
