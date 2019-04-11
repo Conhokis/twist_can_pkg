@@ -156,7 +156,7 @@ canBusHandler::canBusHandler(const char* can_interface, unsigned int *node_id, s
 can_frame canBusHandler::readCanFrame() {
 
 	struct msghdr msg;
-	can_frame frame;
+	struct can_frame frame;
 	int nbytes;
 	fd_set rdfs;
 	char ctrlmsg[CMSG_SPACE(sizeof(struct timeval)) + CMSG_SPACE(sizeof(__u32))];
@@ -208,12 +208,13 @@ void canBusHandler::writeCanFrame(char* str_frame) {
 uint8_t* canBusHandler::readCanMsg() {
 	//8 is number of bytes in CAN data frame
 	static uint8_t final_data[8]
-
+	struct can_frame buff_frame;
+	/*
 	can_frame buff_frame = readCanFrame();
 
 	while(checkFrame(buff_frame)) {
 		buff_frame = readCanFrame();
-	}
+	}*/
 
 	return 0;
 }
