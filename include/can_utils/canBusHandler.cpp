@@ -212,7 +212,6 @@ uint8_t* canBusHandler::readCanMsg() {
 	}
 
 	memcpy(final_data, buff_frame.data, sizeof(buff_frame.data));
-
 	return final_data;
 }
 

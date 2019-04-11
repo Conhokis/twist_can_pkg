@@ -14,6 +14,7 @@ public:
 
 	void shutdownMotor();
 	void powerOnMotor();
+	bool checkMotorStatus();
 
 	void canTestRead();
 	void canTestWrite();

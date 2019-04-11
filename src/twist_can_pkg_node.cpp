@@ -71,9 +71,8 @@ int main(int argc, char **argv) {
 
     ros::Duration TWIST_TIMEOUT = ros::Duration(0.1);
     start_time = ros::Time::now() - TWIST_TIMEOUT;    
-    
-    //canMI.canTestRead();
-    canMI.powerOnMotor();
+
+    canMI.checkMotorStatus();
 
     /*
     while (ros::ok() && !g_request_shutdown) {
