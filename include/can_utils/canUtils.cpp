@@ -70,13 +70,13 @@ void canMotorInterface::powerOnMotor() {
 
 	//Strt operating mode
 	_canBH->writeCanFrame(concDataId("#2B4060000F000000", 0x600));
-
+/*
 	//Check if motor is in operating mode
 	do {
 		_canBH->writeCanFrame(concDataId("#4061600000000000", 0x600));
 		read_data = _canBH->readCanMsg();
 	} while(((read_data[4] & 0b00110111) != 51) || ((read_data[5] & 0b00000010) != 2));
-
+*/
 	std::cout << "Motor is ready for operation!" << std::endl;
 }
 
