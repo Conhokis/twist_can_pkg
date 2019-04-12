@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
     ros::Subscriber sub = n.subscribe("/cmd_vel", 10, updateTwistSpeed);
 
     //To check if theres is input or not from twist_cmd_vel
-    ros::Duration TWIST_TIMEOUT = ros::Duration(0.2);
+    ros::Duration TWIST_TIMEOUT = ros::Duration(0.1);
     start_time = ros::Time::now() - TWIST_TIMEOUT;    
 
     //Sends a message to the motor and waits for the receive
