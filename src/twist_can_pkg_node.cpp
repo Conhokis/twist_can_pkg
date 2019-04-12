@@ -78,6 +78,8 @@ int main(int argc, char **argv) {
 
     //Power on motor
     canMI.powerOnMotor();
+
+    canMI.setTargetVelocity(300);
     
     while (ros::ok() && !g_request_shutdown) {
         //Check if master is running
