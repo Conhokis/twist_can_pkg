@@ -85,7 +85,7 @@ void canMotorInterface::setTargetVelocity(int16_t target_vel) {
 	le_str_buff[1] = str_buff[7];
 	le_str_buff[0] = str_buff[6];
 
-	strcat(final_buff, str_buff);
+	strcat(final_buff, le_str_buff);
 
 	printf("%s\n", final_buff);
 	_canBH->writeCanFrame(final_buff);
