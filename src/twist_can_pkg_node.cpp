@@ -53,7 +53,7 @@ void updateTwistSpeed(const geometry_msgs::Twist::ConstPtr& msg) {
     if(count < 5) count++;
  
     else {
-        lin_vel = msg.linear.x * 400;
+        lin_vel = msg->linear.x * 400;
     }
 }
 
