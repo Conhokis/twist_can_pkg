@@ -11,7 +11,7 @@ canMotorInterface::canMotorInterface(canBusHandler *canBH, unsigned int node_id)
 }
 
 void canMotorInterface::shutdownMotor() {
-	_canBH->writeCanFrame((char*) "611#2B40600000000000");
+	_canBH->writeCanFrame(concDataId((char*) "#2B40600000000000", 0x600));
 }
 
 void canMotorInterface::checkMotorStatus() {
@@ -87,7 +87,7 @@ void canMotorInterface::setTargetVelocity(int16_t target_vel) {
 	le_str_buff[0] = str_buff[6];
 
 	strcat(final_buff, le_str_buff);
-		
+
 	_canBH->writeCanFrame(final_buff);
 }
 

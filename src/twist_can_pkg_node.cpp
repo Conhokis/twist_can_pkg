@@ -19,7 +19,8 @@ size_t size_node_id = sizeof(node_id);
 //Start canBusHandler, manages connection and executes read and write functions
 canBusHandler* canBH = new canBusHandler(interface_id, node_id, size_node_id);  
 //Start node interface with connection name and controller node-id
-canMotorInterface canMI(canBH, node_id[0]);
+canMotorInterface canMI_1(canBH, node_id[0]);
+canMotorInterface canMI_2(canBH, node_id[1]);
 
 // Signal-safe flag for whether shutdown is requested
 sig_atomic_t volatile g_request_shutdown = 0;
@@ -27,14 +28,16 @@ sig_atomic_t volatile g_request_shutdown = 0;
 //Catches ctrl-c events, this is tested and working
 void mySigIntHandler(int sig)
 {
-    canMI.shutdownMotor();
+    canMI_1.shutdownMotor();
+    canMI_2.shutdownMotor();
     exit(0);
 }
 
 //Catches roskill events
 void shutdownCallback(XmlRpc::XmlRpcValue& params, XmlRpc::XmlRpcValue& result)
 {
-    canMI.shutdownMotor();
+    canMI_1.shutdownMotor();
+    canMI_2.shutdownMotor();
     exit(0);
 }
 
@@ -77,10 +80,12 @@ int main(int argc, char **argv) {
     start_time = ros::Time::now() - TWIST_TIMEOUT;    
 
     //Sends a message to the motor and waits for the receive
-    canMI.checkMotorStatus();
+    canMI_1.checkMotorStatus();
+    canMI_2.checkMotorStatus();
 
     //Power on motor
-    canMI.powerOnMotor();
+    canMI_1.powerOnMotor();
+    canMI_2.powerOnMotor();
     
     while (ros::ok() && !g_request_shutdown) {
         //Check if master is running
@@ -92,7 +97,8 @@ int main(int argc, char **argv) {
             count = 0;
         }
 
-        canMI.setTargetVelocity(lin_vel);
+        canMI_1.setTargetVelocity(lin_vel);
+        canMI_2.setTargetVelocity(lin_vel);
 
         loop_rate.sleep();
     }
