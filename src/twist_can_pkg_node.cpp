@@ -43,7 +43,7 @@ void shutdownCallback(XmlRpc::XmlRpcValue& params, XmlRpc::XmlRpcValue& result)
 ros::Time start_time;
 
 //FOR NOW DUE TO TELEOP KEYBOARD KEYS, torna o input num degrau
-#define MIN_HITS_KEY 3
+#define MIN_HITS_KEY 4
 unsigned int count = 0;
 int16_t lin_vel = 0;
 
