@@ -27,42 +27,42 @@ void canMotorInterface::checkMotorStatus() {
 
 void canMotorInterface::powerOnMotor() {
 	//Set velocity mode
-	_canBH->writeCanFrame(concDataId("#2F60600002000000", 0x600));
+	_canBH->writeCanFrame(concDataId((char*) "#2F60600002000000", 0x600));
 
 	//Check if velocity mode is set
 	uint8_t *read_data;
 	do {
-		_canBH->writeCanFrame(concDataId("#4061600000000000", 0x600));
+		_canBH->writeCanFrame(concDataId((char*) "#4061600000000000", 0x600));
 		read_data = _canBH->readCanMsg();
 	} while(read_data[4] != 0x02); //Byte 5 is the start of the data in the frame
 
 	//Set target velocity to 0
-	_canBH->writeCanFrame(concDataId("#2B426000C8000000", 0x600));
+	_canBH->writeCanFrame(concDataId((char*) "#2B426000C8000000", 0x600));
 
 	//Set motor ready to switch on
-	_canBH->writeCanFrame(concDataId("#2B40600006000000", 0x600));
+	_canBH->writeCanFrame(concDataId((char*) "#2B40600006000000", 0x600));
 
 	//Check if motor is ready to switch on
 	do {
-		_canBH->writeCanFrame(concDataId("#4041600000000000", 0x600));
+		_canBH->writeCanFrame(concDataId((char*) "#4041600000000000", 0x600));
 		read_data = _canBH->readCanMsg();
 	} while(((read_data[4] & 0b00100001) != 33) || ((read_data[5] & 0b00000010) != 2));
 
 	//Switch on motor
-	_canBH->writeCanFrame(concDataId("#2B40600007000000", 0x600));
+	_canBH->writeCanFrame(concDataId((char*) "#2B40600007000000", 0x600));
 
 	//Check if motor is switched on
 	do {
-		_canBH->writeCanFrame(concDataId("#4041600000000000", 0x600));
+		_canBH->writeCanFrame(concDataId((char*) "#4041600000000000", 0x600));
 		read_data = _canBH->readCanMsg();
 	} while(((read_data[4] & 0b00110011) != 51) || ((read_data[5] & 0b00000010) != 2));
 
 	//Strt operating mode
-	_canBH->writeCanFrame(concDataId("#2B4060000F000000", 0x600));
+	_canBH->writeCanFrame(concDataId((char*) "#2B4060000F000000", 0x600));
 
 	//Check if motor is in operating mode
 	do {
-		_canBH->writeCanFrame(concDataId("#4041600000000000", 0x600));
+		_canBH->writeCanFrame(concDataId((char*) "#4041600000000000", 0x600));
 		read_data = _canBH->readCanMsg();
 	} while(((read_data[4] & 0b00110111) != 55) || ((read_data[5] & 0b00000010) != 2));
 
@@ -90,7 +90,7 @@ void canMotorInterface::setTargetVelocity(int16_t target_vel) {
 	printf("%s\n", final_buff);
 }
 
-char* canMotorInterface::concDataId(const char* str_data, unsigned int can_cmd) {
+char* canMotorInterface::concDataId(char* str_data, unsigned int can_cmd) {
 	static char str_buff[21];	
 	sprintf(str_buff, "%03x", _node_id + can_cmd);
 	strcat(str_buff, str_data);
