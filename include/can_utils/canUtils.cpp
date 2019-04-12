@@ -90,7 +90,7 @@ void canMotorInterface::setTargetVelocity(int16_t target_vel) {
 	printf("%s\n", final_buff);
 }
 
-char* canMotorInterface::concDataId(char* str_data, unsigned int can_cmd) {
+char* canMotorInterface::concDataId(const char* str_data, unsigned int can_cmd) {
 	static char str_buff[21];	
 	sprintf(str_buff, "%03x", _node_id + can_cmd);
 	strcat(str_buff, str_data);
