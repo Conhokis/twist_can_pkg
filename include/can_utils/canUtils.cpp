@@ -76,6 +76,7 @@ void canMotorInterface::setTargetVelocity(int16_t target_vel) {
 	char str_buff[9], le_str_buff[9];
 	//Convert to string and order the bytes to little endian
 	sprintf(str_buff, "%08x", target_vel);
+	le_str_buff[8] = str_buff[8];
 	le_str_buff[7] = str_buff[1];
 	le_str_buff[6] = str_buff[0];
 	le_str_buff[5] = str_buff[3];
