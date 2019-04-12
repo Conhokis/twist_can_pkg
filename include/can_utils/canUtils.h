@@ -9,14 +9,17 @@ private:
 	
 	//Correctly returns a string in hex that is ready to be parsed and sent
 	char* concDataId(char* str_data, unsigned int can_cmd);
+	char* hexToByteLE(char* hex_str);
 public:
 	canMotorInterface(canBusHandler *canBH, unsigned int node_id); 
 
+	//Powers off motor and engage break
 	void shutdownMotor();
+	//Powers on motor and starts operating mode
 	void powerOnMotor();
+	//To check if the motor is connected
 	void checkMotorStatus();
-
-	void canTestRead();
-	void canTestWrite();
+	//Set target velocity
+	void setTargetVelocity(int16_t target_vel);
 };
 

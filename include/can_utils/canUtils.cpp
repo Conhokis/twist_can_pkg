@@ -14,17 +14,6 @@ void canMotorInterface::shutdownMotor() {
 	_canBH->writeCanFrame("611#2B40600000000000");
 }
 
-void canMotorInterface::canTestRead() {
-	uint8_t* data = _canBH->readCanMsg();
-	printf("%x\n", data[0]);
-}
-
-void canMotorInterface::canTestWrite() {
-	char buff[] = "611#4041600000000000";
-
-	_canBH->writeCanFrame(buff);
-}
-
 void canMotorInterface::checkMotorStatus() {
 	std::cout << "Checking for motors..." << std::endl;
 
@@ -80,12 +69,35 @@ void canMotorInterface::powerOnMotor() {
 	std::cout << "Motor is ready for operation!" << std::endl;
 }
 
-char* canMotorInterface::concDataId(char* str_data, unsigned int can_cmd) {
-	static char str_buff[20];	
+void setTargetVelocity(int16_t target_vel) {
+	/*
+	char str_buff[8], le_str_buff[8];
+	char *send_buff = concDataId("#2B426000", 0x600);
+	sprintf(str_buff, "%08x", target_vel);
 
+	le_str_buff[7] = str_buff[1];
+	le_str_buff[6] = str_buff[0];
+	le_str_buff[5] = str_buff[3];
+	le_str_buff[4] = str_buff[2];
+	le_str_buff[3] = str_buff[5];
+	le_str_buff[2] = str_buff[4];
+	le_str_buff[1] = str_buff[7];
+	le_str_buff[0] = str_buff[6];
+
+	strcat(send_buff, str_buff);*/
+
+//	char final_buff[20];
+//	strcpy(final_buff)
+}
+
+char* canMotorInterface::concDataId(char* str_data, unsigned int can_cmd) {
+	static char str_buff[21];	
+/*
 	if(_node_id + can_cmd < 16) sprintf(str_buff, "00%x", _node_id + can_cmd);
 	else if(_node_id + can_cmd < 256) sprintf(str_buff, "0%x", _node_id + can_cmd);
 	else sprintf(str_buff, "%x", _node_id + can_cmd);
+*/
+	sprintf(str_buff, "%020x", _node_id + can_cmd);
 
 	strcat(str_buff, str_data);
 	return str_buff;
