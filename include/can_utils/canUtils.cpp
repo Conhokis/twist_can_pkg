@@ -91,7 +91,7 @@ void setTargetVelocity(int16_t target_vel) {
 }
 
 char* canMotorInterface::concDataId(char* str_data, unsigned int can_cmd) {
-	static char str_buff[21];	
+	static char str_buff[20];	
 /*
 	if(_node_id + can_cmd < 16) sprintf(str_buff, "00%x", _node_id + can_cmd);
 	else if(_node_id + can_cmd < 256) sprintf(str_buff, "0%x", _node_id + can_cmd);
