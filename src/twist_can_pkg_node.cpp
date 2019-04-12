@@ -43,14 +43,14 @@ void shutdownCallback(XmlRpc::XmlRpcValue& params, XmlRpc::XmlRpcValue& result)
 ros::Time start_time;
 
 //FOR NOW DUE TO TELEOP KEYBOARD KEYS, torna o input num degrau
-#define MIN_HITS_KEY 5
+#define MIN_HITS_KEY 4
 unsigned int count = 0;
 int16_t lin_vel = 0;
 
 void updateTwistSpeed(const geometry_msgs::Twist::ConstPtr& msg) {
     start_time = ros::Time::now();
 
-    if(count < 5) count++;
+    if(count < MIN_HITS_KEY) count++;
  
     else {
         lin_vel = msg->linear.x * 400;
@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
     ros::Subscriber sub = n.subscribe("/cmd_vel", 10, updateTwistSpeed);
 
     //To check if theres is input or not from twist_cmd_vel
-    ros::Duration TWIST_TIMEOUT = ros::Duration(0.1);
+    ros::Duration TWIST_TIMEOUT = ros::Duration(0.05);
     start_time = ros::Time::now() - TWIST_TIMEOUT;    
 
     //Sends a message to the motor and waits for the receive
