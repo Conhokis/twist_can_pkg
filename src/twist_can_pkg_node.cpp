@@ -53,7 +53,8 @@ void updateTwistSpeed(const geometry_msgs::Twist::ConstPtr& msg) {
     if(count < 5) count++;
  
     else {
-        lin_vel = msg->linear.x * 400;
+        //lin_vel = msg->linear.x * 400;
+        std::cout << "Received " << msg->linear.x << std::endl;
     }
 }
 
@@ -81,6 +82,8 @@ int main(int argc, char **argv) {
 
     //Power on motor
     canMI.powerOnMotor();
+
+    //
     
     while (ros::ok() && !g_request_shutdown) {
         //Check if master is running
@@ -88,13 +91,13 @@ int main(int argc, char **argv) {
 
         //If no messages received, enters this if
         if((ros::Time::now() - start_time) > TWIST_TIMEOUT) {
-            //std::cout << "No messages received" << std::endl;
-            canMI.setTargetVelocity(0);
+            std::cout << "No messages received" << std::endl;
+            //canMI.setTargetVelocity(0);
             count = 0;
         }
 
         else {
-            canMI.setTargetVelocity(lin_vel);
+            //canMI.setTargetVelocity(lin_vel);
         }
 
         loop_rate.sleep();
