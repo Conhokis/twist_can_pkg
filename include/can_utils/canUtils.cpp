@@ -12,7 +12,6 @@ canMotorInterface::canMotorInterface(canBusHandler *canBH, unsigned int node_id)
 
 void canMotorInterface::shutdownMotor() {
 	_canBH->writeCanFrame(concDataId((char*) "#2B40600000000000", 0x600));
-	_canBH->readCanMsg();
 }
 
 void canMotorInterface::checkMotorStatus() {

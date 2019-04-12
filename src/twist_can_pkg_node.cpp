@@ -37,6 +37,7 @@ void mySigIntHandler(int sig)
 void shutdownCallback(XmlRpc::XmlRpcValue& params, XmlRpc::XmlRpcValue& result)
 {
     canMI_1.shutdownMotor();
+    usleep(1000);
     canMI_2.shutdownMotor();
     exit(0);
 }
