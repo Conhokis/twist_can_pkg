@@ -69,9 +69,9 @@ void canMotorInterface::powerOnMotor() {
 	std::cout << "Motor is ready for operation!" << std::endl;
 }
 
-void setTargetVelocity(int16_t target_vel) {
+void canMotorInterface::setTargetVelocity(int16_t target_vel) {
 	char final_buff[21];
-	sprintf(final_buff, "%03x#2B426000", _node_id + can_cmd);
+	sprintf(final_buff, "%03x#2B426000", _node_id + 0x600);
 
 	char str_buff[9];
 	//Convert to string and order the bytes to little endian
