@@ -70,11 +70,12 @@ void canMotorInterface::powerOnMotor() {
 }
 
 void setTargetVelocity(int16_t target_vel) {
-	/*
-	char str_buff[8], le_str_buff[8];
-	char *send_buff = concDataId("#2B426000", 0x600);
-	sprintf(str_buff, "%08x", target_vel);
+	char final_buff[21];
+	sprintf(final_buff, "%03x#2B426000", _node_id + can_cmd);
 
+	char str_buff[9];
+	//Convert to string and order the bytes to little endian
+	sprintf(str_buff, "%08x", target_vel);
 	le_str_buff[7] = str_buff[1];
 	le_str_buff[6] = str_buff[0];
 	le_str_buff[5] = str_buff[3];
@@ -84,18 +85,14 @@ void setTargetVelocity(int16_t target_vel) {
 	le_str_buff[1] = str_buff[7];
 	le_str_buff[0] = str_buff[6];
 
-	strcat(send_buff, str_buff);*/
+	strcat(final_buff, str_buff);
 
-//	char final_buff[20];
-//	strcpy(final_buff)
+	printf("%s\n", final_buff);
 }
 
 char* canMotorInterface::concDataId(char* str_data, unsigned int can_cmd) {
 	static char str_buff[21];	
-
 	sprintf(str_buff, "%03x", _node_id + can_cmd);
-	printf("%s\n", str_buff);
-
 	strcat(str_buff, str_data);
 	return str_buff;
 }
