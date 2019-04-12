@@ -89,6 +89,7 @@ void canMotorInterface::setTargetVelocity(int16_t target_vel) {
 	strcat(final_buff, le_str_buff);
 
 	_canBH->writeCanFrame(final_buff);
+	_canBH->readCanMsg();
 }
 
 char* canMotorInterface::concDataId(char* str_data, unsigned int can_cmd) {

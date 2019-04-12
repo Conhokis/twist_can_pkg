@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
     //Configurations of the node
     ros::init(argc, argv, "example_node", ros::init_options::NoSigintHandler);
     ros::NodeHandle n("~");
-    ros::Rate loop_rate(100);
+    ros::Rate loop_rate(50);
 
     //Configuration for catching shutdown event
     signal(SIGINT, mySigIntHandler);
