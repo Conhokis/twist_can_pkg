@@ -98,6 +98,7 @@ char* canMotorInterface::concDataId(char* str_data, unsigned int can_cmd) {
 	else sprintf(str_buff, "%x", _node_id + can_cmd);
 */
 	sprintf(str_buff, "%020x", _node_id + can_cmd);
+	printf("%s\n", str_buff);
 
 	strcat(str_buff, str_data);
 	return str_buff;
