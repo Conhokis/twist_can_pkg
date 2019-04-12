@@ -12,6 +12,7 @@ canMotorInterface::canMotorInterface(canBusHandler *canBH, unsigned int node_id)
 
 void canMotorInterface::shutdownMotor() {
 	_canBH->writeCanFrame(concDataId((char*) "#2B40600000000000", 0x600));
+	_canBH->readCanMsg();
 }
 
 void canMotorInterface::checkMotorStatus() {
@@ -28,6 +29,7 @@ void canMotorInterface::checkMotorStatus() {
 void canMotorInterface::powerOnMotor() {
 	//Set velocity mode
 	_canBH->writeCanFrame(concDataId((char*) "#2F60600002000000", 0x600));
+	_canBH->readCanMsg();
 
 	//Check if velocity mode is set
 	uint8_t *read_data;
@@ -38,9 +40,11 @@ void canMotorInterface::powerOnMotor() {
 
 	//Set target velocity to 0
 	_canBH->writeCanFrame(concDataId((char*) "#2B426000C8000000", 0x600));
+	_canBH->readCanMsg();
 
 	//Set motor ready to switch on
 	_canBH->writeCanFrame(concDataId((char*) "#2B40600006000000", 0x600));
+	_canBH->readCanMsg();
 
 	//Check if motor is ready to switch on
 	do {
@@ -50,6 +54,7 @@ void canMotorInterface::powerOnMotor() {
 
 	//Switch on motor
 	_canBH->writeCanFrame(concDataId((char*) "#2B40600007000000", 0x600));
+	_canBH->readCanMsg();
 
 	//Check if motor is switched on
 	do {
@@ -59,6 +64,7 @@ void canMotorInterface::powerOnMotor() {
 
 	//Strt operating mode
 	_canBH->writeCanFrame(concDataId((char*) "#2B4060000F000000", 0x600));
+	_canBH->readCanMsg();
 
 	//Check if motor is in operating mode
 	do {
