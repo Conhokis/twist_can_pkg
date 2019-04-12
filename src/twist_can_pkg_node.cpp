@@ -89,14 +89,11 @@ int main(int argc, char **argv) {
         //If no messages received, enters this if
         if((ros::Time::now() - start_time) > TWIST_TIMEOUT) {
             std::cout << "No messages received" << std::endl;
-            canMI.setTargetVelocity(0);
+            lin_vel = 0;
             count = 0;
         }
 
-        else {
-            canMI.setTargetVelocity(lin_vel);
-        }
-
+        canMI.setTargetVelocity(lin_vel);
         std::cout << lin_vel << std::endl;
 
         loop_rate.sleep();
