@@ -11,14 +11,14 @@ canMotorInterface::canMotorInterface(canBusHandler *canBH, unsigned int node_id)
 }
 
 void canMotorInterface::shutdownMotor() {
-	_canBH->writeCanFrame("611#2B40600000000000");
+	_canBH->writeCanFrame((char*) "611#2B40600000000000");
 }
 
 void canMotorInterface::checkMotorStatus() {
 	std::cout << "Checking for motors..." << std::endl;
 
 	//Read status word, 0x600 indicates this is an SDO (Service Data Object)
-	_canBH->writeCanFrame(concDataId("#4041600000000000", 0x600));
+	_canBH->writeCanFrame(concDataId((char*) "#4041600000000000", 0x600));
 	//uint8_t *read_data = _canBH->readCanMsg();
 	_canBH->readCanMsg();
 
