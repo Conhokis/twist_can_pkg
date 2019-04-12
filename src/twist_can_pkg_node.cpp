@@ -3,6 +3,7 @@
 #include <geometry_msgs/Twist.h>
 #include <ros/time.h>
 #include <iostream>
+#include <stdint.h>
 
 //For modifying shutdown
 #include <ros/xmlrpc_manager.h>
@@ -44,14 +45,16 @@ ros::Time start_time;
 //FOR NOW DUE TO TELEOP KEYBOARD KEYS, torna o input num degrau
 #define MIN_HITS_KEY 5
 unsigned int count = 0;
+int16_t lin_vel = 0;
 
-//Catches rosnode kill events
 void updateTwistSpeed(const geometry_msgs::Twist::ConstPtr& msg) {
     start_time = ros::Time::now();
 
     if(count < 5) count++;
  
-    else std::cout << "Receiving messages" << std::endl;
+    else {
+        lin_vel = msg.linear.x * 400;
+    }
 }
 
 int main(int argc, char **argv) {
@@ -78,8 +81,6 @@ int main(int argc, char **argv) {
 
     //Power on motor
     canMI.powerOnMotor();
-
-    canMI.setTargetVelocity(300);
     
     while (ros::ok() && !g_request_shutdown) {
         //Check if master is running
@@ -88,7 +89,12 @@ int main(int argc, char **argv) {
         //If no messages received, enters this if
         if((ros::Time::now() - start_time) > TWIST_TIMEOUT) {
             //std::cout << "No messages received" << std::endl;
+            canMI.setTargetVelocity(0);
             count = 0;
+        }
+
+        else {
+            canMI.setTargetVelocity(lin_vel);
         }
 
         loop_rate.sleep();
