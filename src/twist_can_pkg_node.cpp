@@ -28,18 +28,13 @@ sig_atomic_t volatile g_request_shutdown = 0;
 //Catches ctrl-c events, this is tested and working
 void mySigIntHandler(int sig)
 {
-    canMI_1.shutdownMotor();
-    canMI_2.shutdownMotor();
-    exit(0);
+    g_request_shutdown = 1;
 }
 
 //Catches roskill events
 void shutdownCallback(XmlRpc::XmlRpcValue& params, XmlRpc::XmlRpcValue& result)
 {
-    canMI_1.shutdownMotor();
-    usleep(1000);
-    canMI_2.shutdownMotor();
-    exit(0);
+    g_request_shutdown = 1;
 }
 
 //=============================================================
@@ -80,7 +75,7 @@ int main(int argc, char **argv) {
     ros::Duration TWIST_TIMEOUT = ros::Duration(0.05);
     start_time = ros::Time::now() - TWIST_TIMEOUT;    
 
-    //Sends a message to the motor and waits for the receive
+    //Sends a message to the motor and waits for the receive, check if motor is connected
     canMI_1.checkMotorStatus();
     canMI_2.checkMotorStatus();
 
@@ -103,6 +98,10 @@ int main(int argc, char **argv) {
 
         loop_rate.sleep();
     }
+
+    //Shutdown tasks, in this case power off motors and engage brake
+    canMI_1.shutdownMotor();
+    canMI_2.shutdownMotor();
 
     ros::shutdown();
 }
