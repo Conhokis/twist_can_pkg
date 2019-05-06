@@ -22,6 +22,6 @@ public:
 	//Set target velocity
 	void setTargetVelocity(int16_t target_vel);
 	//Reads the motor speed
-	uint16_t readMotorSpeed();
+	int16_t readMotorSpeed();
 };
 
