@@ -14,11 +14,16 @@ uint16_t canMotorInterface::readMotorSpeed() {
 	_canBH->writeCanFrame(concDataId((char*) "#4044600000000000",0x600));
 	uint8_t *read_data = _canBH->readCanMsg();
 
+	int16_t velocity = (read_data[4]) | (read_data[5] << 8) | (read_data[6] << 16) | (read_data[7] << 24);
+	/*
 	for (int i = 0; i < 7; ++i)
 	{
 		printf("%x ", read_data[i]);
 	}
 	printf("\n");
+	*/
+
+	return velocity;
 }
 
 void canMotorInterface::shutdownMotor() {
