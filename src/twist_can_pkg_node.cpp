@@ -83,19 +83,24 @@ int main(int argc, char **argv) {
     canMI_1.powerOnMotor();
     canMI_2.powerOnMotor();
     
+    ros::Time start_loop_time;
+    ros::Time end_loop_time;
     while (ros::ok() && !g_request_shutdown) {
         //Check if master is running
         ros::spinOnce();
+        start_loop_time = ros::Time::now();
 
         //If no messages received, enters this if
         if((ros::Time::now() - start_time) > TWIST_TIMEOUT) {
-            lin_vel = 0;
+            lin_vel = 1000;
             count = 0;
         }
 
         canMI_1.setTargetVelocity(lin_vel);
         canMI_2.setTargetVelocity(lin_vel);
 
+        end_loop_time = ros::Time::now();
+        std::cout << start_loop_time - end_loop_time << std::endl;
         loop_rate.sleep();
     }
 
