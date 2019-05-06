@@ -10,6 +10,17 @@ canMotorInterface::canMotorInterface(canBusHandler *canBH, unsigned int node_id)
 	_canBH = canBH;
 }
 
+uint16_t canMotorInterface::readMotorSpeed() {
+	_canBH->writeCanFrame(concDataId((char*) "#4044600000000000",0x600));
+	uint8_t *read_data = _canBH->readCanMsg();
+
+	for (int i = 0; i < 7; ++i)
+	{
+		printf("%x ", read_data[i]);
+	}
+	printf("\n");
+}
+
 void canMotorInterface::shutdownMotor() {
 	_canBH->writeCanFrame(concDataId((char*) "#2B40600000000000", 0x600));
 	_canBH->readCanMsg();

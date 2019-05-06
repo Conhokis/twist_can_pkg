@@ -100,7 +100,10 @@ int main(int argc, char **argv) {
         canMI_2.setTargetVelocity(lin_vel);
 
         end_loop_time = ros::Time::now();
-        std::cout << start_loop_time - end_loop_time << std::endl;
+        //Uncomment for loop times
+        //std::cout << end_loop_time - start_loop_time << std::endl;
+        std::cout << "Motor 1: " << canMI_1.readMotorSpeed() << std::endl;
+        std::cout << "Motor 2: " << canMI_2.readMotorSpeed() << std::endl;
         loop_rate.sleep();
     }
 
