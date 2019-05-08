@@ -11,7 +11,7 @@ canMotorInterface::canMotorInterface(canBusHandler *canBH, unsigned int node_id)
 }
 
 int32_t canMotorInterface::readMotorEncoder() {
-	_canBH->writeCanFrame(concDataId((char*) "#4044600000000000", 0x600));
+	_canBH->writeCanFrame(concDataId((char*) "#4064600000000000", 0x600));
 	uint8_t *read_data = _canBH->readCanMsg();
 	int32_t encoder_read = (read_data[4]) | (read_data[5] << 8) | (read_data[6] << 16) | (read_data[7] << 24);
 	return encoder_read;
