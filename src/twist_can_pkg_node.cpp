@@ -89,7 +89,7 @@ int main(int argc, char **argv) {
     //Gets the motor resolution and creates the class that handles odometry calculations
     OdometryCalculator OdomCalc(canMI_1.getEncoderResolution());
 
-    //Power on motor
+    //Sets speed to zero then powers on motor
     canMI_1.powerOnMotor();
     canMI_2.powerOnMotor();
     

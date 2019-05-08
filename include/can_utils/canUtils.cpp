@@ -55,7 +55,7 @@ void canMotorInterface::powerOnMotor() {
 	} while(read_data[4] != 0x02); //Byte 5 is the start of the data in the frame
 
 	//Set target velocity to 0
-	_canBH->writeCanFrame(concDataId((char*) "#2B426000C8000000", 0x600));
+	_canBH->writeCanFrame(concDataId((char*) "#2B42600000000000", 0x600));
 	_canBH->readCanMsg();
 
 	//Set motor ready to switch on
