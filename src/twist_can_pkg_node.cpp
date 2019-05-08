@@ -125,7 +125,7 @@ int main(int argc, char **argv) {
         //====================
         end_loop_time = ros::Time::now();
         //Uncomment for loop times
-        //std::cout << end_loop_time - start_loop_time << std::endl;
+        std::cout << "Loop Time: " << end_loop_time - start_loop_time << std::endl;
         loop_rate.sleep();
     }
 

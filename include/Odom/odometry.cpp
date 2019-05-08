@@ -31,8 +31,8 @@ OdometryCalculator::OdometryCalculator(int32_t encoder_resolution) {
 
 void OdometryCalculator::updateOdometry(int32_t new_impulses_1, int32_t new_impulses_2, ros::Time new_time_1, ros::Time new_time_2) {
 	//Convert impulses to distance travelled by wheel
-	double d_1 = ((new_impulses_1 - _impulses_1) / 4096.0f) * 2 * M_PI * WHEEL_RADIUS;
-	double d_2 = ((new_impulses_2 - _impulses_2) / 4096.0f) * 2 * M_PI * WHEEL_RADIUS;
+	double d_1 = (((new_impulses_1 - _impulses_1) / 4096.0f) / 32) * 2 * M_PI * WHEEL_RADIUS;
+	double d_2 = (((new_impulses_2 - _impulses_2) / 4096.0f) / 32) * 2 * M_PI * WHEEL_RADIUS;
 
 	double total_d = (d_1 + d_2) / 2;
 	double theta_diff = (d_1 - d_2) / DIST_BETWEEN_WHEELS;
