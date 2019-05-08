@@ -2,7 +2,6 @@
 #include <stdint.h>
 #include <tf/transform_broadcaster.h>
 #include <nav_msgs/Odometry.h>
-#include <iostream>
 
 
 class OdometryCalculator {
@@ -10,7 +9,7 @@ private:
 	//Encoder resolution
 	int32_t _encoder_resolution;
 	//Position values
-	int32_t _x, _y, _theta;
+	double _x, _y, _theta, _v_x, _v_y, _v_theta;
 	//Encoder impulse counters
 	int32_t _impulses_1, _impulses_2;
 	//Times of read;
