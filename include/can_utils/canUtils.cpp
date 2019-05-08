@@ -22,7 +22,7 @@ int32_t canMotorInterface::getEncoderResolution() {
 	uint8_t *read_data = _canBH->readCanMsg();
 	int32_t encoder_resolution = (read_data[4]) | (read_data[5] << 8) | (read_data[6] << 16) | (read_data[7] << 24);
 	//This is divided here by 4 following the documentation (C5-E Technical Manual p.307)
-	encoder_resolution = encoder_resolution / 4;
+	//encoder_resolution = encoder_resolution / 4;
 	return encoder_resolution;
 }
 
