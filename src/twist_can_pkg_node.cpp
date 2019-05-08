@@ -96,7 +96,7 @@ int main(int argc, char **argv) {
     //Buffer variables for while loop
     ros::Time start_loop_time, end_loop_time;
     ros::Time encoder_time_1, encoder_time_2;
-    int32_t encoder_position_1, encoder_position_2;
+    int32_t encoder_impulses_1, encoder_impulses_2;
     while (ros::ok() && !g_request_shutdown) {
         //Check if master is running
         ros::spinOnce();
@@ -113,17 +113,14 @@ int main(int argc, char **argv) {
 
         //====================
         //Daqui para cima está feito, experiências é para baixo
-        /*
+        
         encoder_time_1 = ros::Time::now();
-
+        encoder_impulses_1 = canMI_1.readMotorEncoder();
         encoder_time_2 = ros::Time::now();
-
-        OdomCalc.updateOdometry(encoder_position_1, encoder_position_2, encoder_time_1, encoder_time_2);*/
-        encoder_position_1 = canMI_1.readMotorEncoder();
-        encoder_position_2 = canMI_2.readMotorEncoder();
-
-        std::cout << "Motor 1: " << encoder_position_1 << std::endl;
-        std::cout << "Motor 2: " << encoder_position_2 << std::endl; 
+        encoder_impulses_2 = canMI_2.readMotorEncoder();
+        OdomCalc.updateOdometry(encoder_impulses_1, encoder_impulses_2, encoder_time_1, encoder_time_2);
+        
+        
 
         //====================
         end_loop_time = ros::Time::now();

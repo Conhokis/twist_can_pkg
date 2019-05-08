@@ -2,6 +2,8 @@
 #include <stdint.h>
 #include <tf/transform_broadcaster.h>
 #include <nav_msgs/Odometry.h>
+#include <iostream>
+
 
 class OdometryCalculator {
 private:
