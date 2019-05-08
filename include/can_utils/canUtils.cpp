@@ -10,19 +10,20 @@ canMotorInterface::canMotorInterface(canBusHandler *canBH, unsigned int node_id)
 	_canBH = canBH;
 }
 
-int16_t canMotorInterface::readMotorSpeed() {
-	_canBH->writeCanFrame(concDataId((char*) "#4044600000000000",0x600));
+int32_t canMotorInterface::readMotorEncoder() {
+	_canBH->writeCanFrame(concDataId((char*) "#4044600000000000", 0x600));
 	uint8_t *read_data = _canBH->readCanMsg();
+	int32_t encoder_read = (read_data[4]) | (read_data[5] << 8) | (read_data[6] << 16) | (read_data[7] << 24);
+	return encoder_read;
+}
 
-	int16_t velocity = (read_data[4]) | (read_data[5] << 8) | (read_data[6] << 16) | (read_data[7] << 24);
-	
-	for (int i = 0; i < 7; ++i)
-	{
-		printf("%x ", read_data[i]);
-	}
-	printf("\n");
-
-	return velocity;
+int32_t canMotorInterface::getEncoderResolution() {
+	_canBH->writeCanFrame(concDataId((char*) "#408F600100000000", 0x600));
+	uint8_t *read_data = _canBH->readCanMsg();
+	int32_t encoder_resolution = (read_data[4]) | (read_data[5] << 8) | (read_data[6] << 16) | (read_data[7] << 24);
+	//This is divided here by 4 following the documentation (C5-E Technical Manual p.307)
+	encoder_resolution = encoder_resolution / 4;
+	return encoder_resolution;
 }
 
 void canMotorInterface::shutdownMotor() {

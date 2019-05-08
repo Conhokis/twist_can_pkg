@@ -22,6 +22,8 @@ public:
 	//Set target velocity
 	void setTargetVelocity(int16_t target_vel);
 	//Reads the motor speed
-	int16_t readMotorSpeed();
+	int32_t readMotorEncoder();
+	//Reads and stores the encoder resolution for odometry
+	int32_t getEncoderResolution();
 };
 

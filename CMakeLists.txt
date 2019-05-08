@@ -127,6 +127,7 @@ add_library(can_library include/can_utils/canUtils.cpp include/can_utils/canBusH
 add_library(can_lib include/can_utils/lib.c)
 target_link_libraries(can_library can_lib)
 
+add_library(odom_library include/Odom/odometry.cpp)
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -152,7 +153,7 @@ target_link_libraries(${PROJECT_NAME}_node
   ${catkin_LIBRARIES}
 )
 
-target_link_libraries(twist_can_pkg_node can_library)
+target_link_libraries(twist_can_pkg_node can_library odom_library)
 
 #############
 ## Install ##
