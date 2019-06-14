@@ -32,6 +32,10 @@ canMotorInterface canMI_2(canBH, node_id[1]);
 // Signal-safe flag for whether shutdown is requested
 sig_atomic_t volatile g_request_shutdown = 0;
 
+//Distance between wheels
+#define DIST_BETWEEN_WHEELS 0.5
+#define SPEED_FACTOR 0.25
+
 //Catches ctrl-c events, this is tested and working
 void mySigIntHandler(int sig)
 {
@@ -52,14 +56,16 @@ ros::Time start_time;
 #define MIN_HITS_KEY 4
 unsigned int count = 0;
 int16_t lin_vel = 0;
+int16_t rot_vel = 0;
 
-void updateTwistSpeed(const geometry_msgs::Twist::ConstPtr& msg) {
+void twistCallback(const geometry_msgs::Twist::ConstPtr& msg) {
     start_time = ros::Time::now();
 
     if(count < MIN_HITS_KEY) count++;
  
     else {
-        lin_vel = msg->linear.x * 600;
+        lin_vel = msg->linear.x;
+        rot_vel = msg->angular.z;
     }
 }
 
@@ -76,7 +82,7 @@ int main(int argc, char **argv) {
     ros::XMLRPCManager::instance()->bind("shutdown", shutdownCallback);
 
     //Subscribe to /cmd_vel
-    ros::Subscriber sub = n.subscribe("/cmd_vel", 10, updateTwistSpeed);
+    ros::Subscriber sub = n.subscribe("/cmd_vel", 10, twistCallback);
     //To check if theres is input or not from twist_cmd_vel
     ros::Duration TWIST_TIMEOUT = ros::Duration(0.05);
     start_time = ros::Time::now() - TWIST_TIMEOUT;
@@ -109,8 +115,8 @@ int main(int argc, char **argv) {
             count = 0;
         }
 
-        canMI_1.setTargetVelocity(lin_vel);
-        canMI_2.setTargetVelocity(lin_vel);
+        canMI_1.setTargetVelocity((lin_vel + (DIST_BETWEEN_WHEELS/2) * rot_vel) * 3500 * SPEED_FACTOR);
+        canMI_2.setTargetVelocity((lin_vel - (DIST_BETWEEN_WHEELS/2) * rot_vel) * 3500 * SPEED_FACTOR);
 
         //====================
         //Daqui para cima está feito, experiências é para baixo
