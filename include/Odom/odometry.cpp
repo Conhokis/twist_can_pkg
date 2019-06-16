@@ -15,7 +15,7 @@ geometry_msgs::TransformStamped OdometryCalculator::getTfMessage() {
 	return _odom_tf;
 }
 
-OdometryCalculator::OdometryCalculator(int32_t encoder_resolution) {
+OdometryCalculator::OdometryCalculator(int32_t encoder_resolution, int32_t impulses_1, int32_t impulses_2) {
 	_encoder_resolution = encoder_resolution;
 
 	_x = 0;
@@ -25,14 +25,14 @@ OdometryCalculator::OdometryCalculator(int32_t encoder_resolution) {
 	_theta = 0;
 	_v_theta = 0;
 
-	_impulses_1 = 0;
-	_impulses_2 = 0;
+	_impulses_1 = impulses_1;
+	_impulses_2 = impulses_2;
 }
 
 void OdometryCalculator::updateOdometry(int32_t new_impulses_1, int32_t new_impulses_2, ros::Time current_time) {
 	//Convert impulses to distance travelled by wheel
-	double d_1 = (((new_impulses_1 - _impulses_1) / 4096.0f) / 32) * 2 * M_PI * WHEEL_RADIUS;
-	double d_2 = (((new_impulses_2 - _impulses_2) / 4096.0f) / 32) * 2 * M_PI * WHEEL_RADIUS;
+	double d_1 = (((new_impulses_1 - _impulses_1) / 4096.0f) / 16) * 2 * M_PI * WHEEL_RADIUS;
+	double d_2 = (((new_impulses_2 - _impulses_2) / 4096.0f) / 16) * 2 * M_PI * WHEEL_RADIUS;
 
 	double total_d = (d_1 + d_2) / 2;
 	double theta_diff = (d_1 - d_2) / DIST_BETWEEN_WHEELS;

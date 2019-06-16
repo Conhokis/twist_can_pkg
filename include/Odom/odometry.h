@@ -20,7 +20,7 @@ private:
 	nav_msgs::Odometry _odom;
 
 public:
-	OdometryCalculator(int32_t encoder_resolution);
+	OdometryCalculator(int32_t encoder_resolution, int32_t impulses_1, int32_t impulses_2);
 
 	//Reads encoders and updates speed, positions and the desired messages
 	void updateOdometry(int32_t new_impulses_1, int32_t new_impulses_2, ros::Time current_time);
