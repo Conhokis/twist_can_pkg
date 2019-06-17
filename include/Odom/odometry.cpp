@@ -24,12 +24,11 @@ OdometryCalculator::OdometryCalculator(int32_t encoder_resolution, int32_t impul
 	_v_y = 0;
 	_theta = 0;
 	_v_theta = 0;
- 
+
 	_impulses_1 = impulses_1;
 	_impulses_2 = impulses_2;
 	double d_1 = ((_impulses_1 / 4096.0f) / 16) * 2 * M_PI * WHEEL_RADIUS;
 	double d_2 = ((_impulses_2 / 4096.0f) / 16) * 2 * M_PI * WHEEL_RADIUS;
-	//_start_theta = (d_1 - d_2) / DIST_BETWEEN_WHEELS;
 }
 
 void OdometryCalculator::updateOdometry(int32_t new_impulses_1, int32_t new_impulses_2, ros::Time current_time) {

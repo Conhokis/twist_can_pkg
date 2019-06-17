@@ -95,10 +95,9 @@ int main(int argc, char **argv) {
     canMI_1.checkMotorStatus();
     canMI_2.checkMotorStatus();
     //Gets the motor resolution and creates the class that handles odometry calculations
-	int32_t aux1 = canMI_1.readMotorEncoder();
-	int32_t aux2 = canMI_2.readMotorEncoder();
-    OdometryCalculator OdomCalc(canMI_1.getEncoderResolution(), -aux1, aux2);
-    std::cout << "encoder 1: " << aux1 << " encoder 2: " << aux2; 
+
+    OdometryCalculator OdomCalc(canMI_1.getEncoderResolution(), -canMI_1.readMotorEncoder(), canMI_2.readMotorEncoder()); 
+
     //Sets speed to zero then powers on motor
     canMI_1.powerOnMotor();
     canMI_2.powerOnMotor();
